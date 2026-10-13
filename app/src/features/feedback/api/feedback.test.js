@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { feedbackService } from './feedback.js';
 
+const TEST_VILLAGE_ID = '00000000-0000-0000-0000-000000000001';
+
 test('feedbackService rejects messages shorter than 10 characters', async () => {
     await assert.rejects(
         () => feedbackService.submitFeedback({ message: 'too short' }),
@@ -39,6 +41,16 @@ test('feedbackService rejects invalid reference IDs for status check', async () 
     );
 });
 
+test('feedbackService fails clearly when target village cannot be resolved', async () => {
+    await assert.rejects(
+        () => feedbackService.submitFeedback({
+            name: 'Unresolvable Village Resident',
+            message: 'Feedback submitted without explicit village or configured database.'
+        }),
+        /Unable to submit feedback: Target village identifier could not be resolved/
+    );
+});
+
 function setMockOnline(online) {
     if (typeof globalThis.navigator === 'undefined') {
         globalThis.navigator = { onLine: online };
@@ -56,6 +68,7 @@ test('feedbackService submits offline and enqueues to durable queue', async () =
 
     try {
         const result = await feedbackService.submitFeedback({
+            village_id: TEST_VILLAGE_ID,
             name: 'K. Ramu',
             phone: '9848022338',
             category: 'Correction',
@@ -76,6 +89,7 @@ test('feedbackService drains and synchronizes offline submissions', async () => 
     setMockOnline(false);
     try {
         await feedbackService.submitFeedback({
+            village_id: TEST_VILLAGE_ID,
             name: 'Sync Test User',
             message: 'Draining offline queue successfully test message.'
         });
@@ -105,6 +119,7 @@ test('feedbackService handles duplicate reference_id during sync as already sync
 
     try {
         await feedbackService.submitFeedback({
+            village_id: TEST_VILLAGE_ID,
             name: 'Duplicate Test',
             message: 'This record tests 23505 unique collision handling during sync.'
         });
@@ -141,6 +156,7 @@ test('feedbackService propagates database rate-limit rejections without queuing 
     try {
         await assert.rejects(
             () => feedbackService.submitFeedback({
+                village_id: TEST_VILLAGE_ID,
                 name: 'Rate Limit Test',
                 phone: '9848011223',
                 message: 'This feedback will be rejected by database triggers.'
@@ -167,6 +183,7 @@ test('feedbackService propagates PostgreSQL constraint violations without queuin
     try {
         await assert.rejects(
             () => feedbackService.submitFeedback({
+                village_id: TEST_VILLAGE_ID,
                 name: 'Constraint Test',
                 message: 'Violating length constraint at database level.'
             }),
@@ -192,6 +209,7 @@ test('feedbackService propagates RLS authorization denials without queuing offli
     try {
         await assert.rejects(
             () => feedbackService.submitFeedback({
+                village_id: TEST_VILLAGE_ID,
                 name: 'RLS Test',
                 message: 'Anonymous user blocked by row-level security policy.'
             }),
@@ -218,6 +236,7 @@ test('feedbackService catches genuine network failure and enqueues to offline qu
     try {
         const initialCount = feedbackService.getPendingFeedbackCount();
         const res = await feedbackService.submitFeedback({
+            village_id: TEST_VILLAGE_ID,
             name: 'Network Disconnected Resident',
             message: 'Submitting feedback when device has intermittent connection.'
         });
@@ -253,6 +272,7 @@ test('feedbackService records successful insert directly without queuing', async
 
     try {
         const res = await feedbackService.submitFeedback({
+            village_id: TEST_VILLAGE_ID,
             name: 'P. Appala Naidu',
             phone: '9848011222',
             message: 'Water supply pipeline repair request for Ward 2.'

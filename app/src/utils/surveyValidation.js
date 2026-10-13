@@ -1,7 +1,10 @@
 const env = (typeof import.meta !== 'undefined' && import.meta.env)
     ? import.meta.env
     : (typeof process !== 'undefined' ? process.env : {});
-const DEFAULT_VILLAGE_ID = env.VITE_DEFAULT_VILLAGE_ID || '00000000-0000-0000-0000-000000000001';
+const rawVillageId = env.VITE_DEFAULT_VILLAGE_ID;
+const DEFAULT_VILLAGE_ID = (rawVillageId && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(rawVillageId.trim()))
+    ? rawVillageId.trim()
+    : null;
 
 export const REQUIRED_SURVEY_QUESTIONS = [
     'D1', 'D2', 'D3', 'D4', 'D5', 'D6',

@@ -1,4 +1,4 @@
-import { supabase, DEFAULT_VILLAGE_ID } from '../../../lib/supabase.js';
+import { supabase, DEFAULT_VILLAGE_ID, resolveVillageId } from '../../../lib/supabase.js';
 import { offlineQueue } from '../../../lib/offlineQueue.js';
 
 const FEEDBACK_COOLDOWN_MS = 30000; // 30 seconds
@@ -36,12 +36,25 @@ export const feedbackService = {
             }
         }
 
+        let targetVillageId = feedbackData.village_id || DEFAULT_VILLAGE_ID;
+        if (!targetVillageId) {
+            try {
+                targetVillageId = await resolveVillageId();
+            } catch {
+                targetVillageId = null;
+            }
+        }
+
+        if (!targetVillageId) {
+            throw new Error('Unable to submit feedback: Target village identifier could not be resolved from configuration or database.');
+        }
+
         const currentYear = new Date().getFullYear();
         const randNum = Math.floor(10000 + Math.random() * 90000);
         const refId = `VM-FB-${currentYear}-${randNum}`;
 
         const payload = {
-            village_id: feedbackData.village_id || DEFAULT_VILLAGE_ID,
+            village_id: targetVillageId,
             reference_id: refId,
             name: (feedbackData.name || '').trim() || 'Anonymous Resident',
             phone: (feedbackData.phone || '').trim() || null,

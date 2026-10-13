@@ -1,4 +1,5 @@
-import { supabase } from './supabase';
+import { supabase } from './supabase.js';
+import { isValidEmail } from '../utils/validation.js';
 
 export const authService = {
     async getSession() {
@@ -8,9 +9,21 @@ export const authService = {
     },
 
     async signIn(email, password) {
+        if (!email || typeof email !== 'string') {
+            throw new Error('Please enter a valid email address.');
+        }
+        const cleanEmail = email.trim();
+        if (!isValidEmail(cleanEmail)) {
+            throw new Error('Please enter a valid email address.');
+        }
+
+        if (password === undefined || password === null || typeof password !== 'string' || password.length === 0) {
+            throw new Error('Password is required.');
+        }
+
         const { data, error } = await supabase.auth.signInWithPassword({
-            email: email.trim(),
-            password: password.trim()
+            email: cleanEmail,
+            password: password
         });
         if (error) throw error;
         return data;

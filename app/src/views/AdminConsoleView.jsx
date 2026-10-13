@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Lock, LogOut, Plus, Trash2, ShieldCheck, UserPlus, Key, Edit, Eye, EyeOff, ChevronDown, ChevronUp, Check, Upload, X, Image as ImageIcon } from 'lucide-react';
-import { supabase, DEFAULT_VILLAGE_ID } from '../lib/supabase';
+import { supabase, DEFAULT_VILLAGE_ID, resolveVillageId } from '../lib/supabase';
 import CustomDatePicker from '../components/CustomDatePicker';
 
 // Categories matching only the existing database records
@@ -553,7 +553,10 @@ export default function AdminConsoleView({ initialTab = 'profile' } = {}) {
                 updated_at: new Date().toISOString()
             };
 
-            const targetId = village.id || DEFAULT_VILLAGE_ID;
+            let targetId = village?.id || DEFAULT_VILLAGE_ID;
+            if (!targetId) {
+                targetId = await resolveVillageId();
+            }
 
             // Direct update first on existing record
             const { error: updateError } = await supabase
@@ -660,8 +663,13 @@ export default function AdminConsoleView({ initialTab = 'profile' } = {}) {
     // Save Handlers for the 5 Modules
     const handleSaveAnnouncement = async (e) => {
         e.preventDefault();
+        const targetVillageId = village?.id || DEFAULT_VILLAGE_ID || (await resolveVillageId().catch(() => null));
+        if (!targetVillageId) {
+            notify('Error: Village identifier could not be resolved.', 'danger');
+            return;
+        }
         const payload = {
-            village_id: village.id || DEFAULT_VILLAGE_ID,
+            village_id: targetVillageId,
             title: announcementForm.title.trim(),
             title_te: announcementForm.title_te ? announcementForm.title_te.trim() : null,
             description: announcementForm.description.trim(),
@@ -687,8 +695,13 @@ export default function AdminConsoleView({ initialTab = 'profile' } = {}) {
 
     const handleSaveScheme = async (e) => {
         e.preventDefault();
+        const targetVillageId = village?.id || DEFAULT_VILLAGE_ID || (await resolveVillageId().catch(() => null));
+        if (!targetVillageId) {
+            notify('Error: Village identifier could not be resolved.', 'danger');
+            return;
+        }
         const payload = {
-            village_id: village.id || DEFAULT_VILLAGE_ID,
+            village_id: targetVillageId,
             name: schemeForm.name.trim(),
             name_te: schemeForm.name_te ? schemeForm.name_te.trim() : null,
             category: schemeForm.category,
@@ -718,8 +731,13 @@ export default function AdminConsoleView({ initialTab = 'profile' } = {}) {
 
     const handleSaveContact = async (e) => {
         e.preventDefault();
+        const targetVillageId = village?.id || DEFAULT_VILLAGE_ID || (await resolveVillageId().catch(() => null));
+        if (!targetVillageId) {
+            notify('Error: Village identifier could not be resolved.', 'danger');
+            return;
+        }
         const payload = {
-            village_id: village.id || DEFAULT_VILLAGE_ID,
+            village_id: targetVillageId,
             name: contactForm.name.trim(),
             name_te: contactForm.name_te ? contactForm.name_te.trim() : null,
             category: contactForm.category,
@@ -747,8 +765,13 @@ export default function AdminConsoleView({ initialTab = 'profile' } = {}) {
 
     const handleSaveInstitution = async (e) => {
         e.preventDefault();
+        const targetVillageId = village?.id || DEFAULT_VILLAGE_ID || (await resolveVillageId().catch(() => null));
+        if (!targetVillageId) {
+            notify('Error: Village identifier could not be resolved.', 'danger');
+            return;
+        }
         const payload = {
-            village_id: village.id || DEFAULT_VILLAGE_ID,
+            village_id: targetVillageId,
             name: institutionForm.name.trim(),
             name_te: institutionForm.name_te ? institutionForm.name_te.trim() : null,
             type: institutionForm.type,
@@ -776,8 +799,13 @@ export default function AdminConsoleView({ initialTab = 'profile' } = {}) {
 
     const handleSaveBusiness = async (e) => {
         e.preventDefault();
+        const targetVillageId = village?.id || DEFAULT_VILLAGE_ID || (await resolveVillageId().catch(() => null));
+        if (!targetVillageId) {
+            notify('Error: Village identifier could not be resolved.', 'danger');
+            return;
+        }
         const payload = {
-            village_id: village.id || DEFAULT_VILLAGE_ID,
+            village_id: targetVillageId,
             name: businessForm.name.trim(),
             name_te: businessForm.name_te ? businessForm.name_te.trim() : null,
             owner_name: businessForm.owner_name ? businessForm.owner_name.trim() : null,

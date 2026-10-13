@@ -26,7 +26,7 @@ CREATE INDEX IF NOT EXISTS idx_audit_logs_entity ON public.audit_logs(entity_typ
 CREATE INDEX IF NOT EXISTS idx_audit_logs_actor ON public.audit_logs(actor_id);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_created_at ON public.audit_logs(created_at DESC);
 
--- 2. Sensitive data redaction helper function
+-- 2. Sensitive data redaction helper function with recursive sanitization policy
 CREATE OR REPLACE FUNCTION public.sanitize_audit_payload(p_data JSONB)
 RETURNS JSONB
 LANGUAGE plpgsql
@@ -34,27 +34,90 @@ IMMUTABLE
 SET search_path TO 'public', 'pg_temp'
 AS $$
 DECLARE
-    v_clean JSONB;
+    v_clean JSONB := '{}'::jsonb;
+    v_key TEXT;
+    v_val JSONB;
+    v_val_text TEXT;
+    v_val_type TEXT;
+    v_lower_key TEXT;
+    v_clean_digits TEXT;
+    v_masked_phone TEXT;
 BEGIN
     IF p_data IS NULL THEN
         RETURN NULL;
     END IF;
 
-    v_clean := p_data;
+    v_val_type := jsonb_typeof(p_data);
 
-    -- Strip sensitive authentication and secret keys if present
-    v_clean := v_clean - 'password' - 'password_hash' - 'token' - 'secret' - 'auth_code' - 'api_key';
-
-    -- Mask citizen phone numbers if present in payload (keep last 4 digits)
-    IF v_clean ? 'phone' AND v_clean->>'phone' IS NOT NULL AND length(v_clean->>'phone') >= 4 THEN
-        v_clean := jsonb_set(
-            v_clean,
-            '{phone}',
-            to_jsonb(repeat('X', greatest(length(v_clean->>'phone') - 4, 2)) || right(v_clean->>'phone', 4))
-        );
+    -- Primitive scalar types (string, number, boolean, null)
+    IF v_val_type = 'null' THEN
+        RETURN 'null'::jsonb;
+    ELSIF v_val_type IN ('string', 'number', 'boolean') THEN
+        RETURN p_data;
     END IF;
 
-    RETURN v_clean;
+    -- Recursive array sanitization
+    IF v_val_type = 'array' THEN
+        IF jsonb_array_length(p_data) = 0 THEN
+            RETURN '[]'::jsonb;
+        END IF;
+
+        SELECT COALESCE(jsonb_agg(public.sanitize_audit_payload(elem)), '[]'::jsonb)
+        INTO v_clean
+        FROM jsonb_array_elements(p_data) AS elem;
+
+        RETURN v_clean;
+    END IF;
+
+    -- Recursive object sanitization
+    IF v_val_type = 'object' THEN
+        FOR v_key, v_val IN SELECT * FROM jsonb_each(p_data)
+        LOOP
+            v_lower_key := lower(v_key);
+
+            -- 1. Sensitive authentication keys, passwords, tokens, API keys, credentials, PII identity identifiers
+            IF v_lower_key ~ '(password|passwd|secret|token|api_?key|auth_?code|credentials|private_?key|access_?token|refresh_?token|bearer|passcode|otp|aadhaar|ssn|national_?id)' THEN
+                CONTINUE; -- Exclude sensitive keys entirely from the audit payload
+            END IF;
+
+            -- 2. Personal contact and phone number fields: recursive sanitize if object/array, or mask digits if string/number
+            IF v_lower_key ~ '(phone|mobile|cell|contact_phone|emergency_phone|telephone)' THEN
+                IF jsonb_typeof(v_val) = 'string' THEN
+                    v_val_text := v_val #>> '{}';
+                    v_clean_digits := regexp_replace(v_val_text, '\D', '', 'g');
+                    IF length(v_clean_digits) >= 4 THEN
+                        v_masked_phone := repeat('X', greatest(length(v_clean_digits) - 4, 2)) || right(v_clean_digits, 4);
+                        v_clean := v_clean || jsonb_build_object(v_key, to_jsonb(v_masked_phone));
+                    ELSIF length(v_clean_digits) > 0 THEN
+                        v_clean := v_clean || jsonb_build_object(v_key, to_jsonb(repeat('X', length(v_clean_digits))));
+                    ELSE
+                        v_clean := v_clean || jsonb_build_object(v_key, to_jsonb(v_val_text));
+                    END IF;
+                    CONTINUE;
+                ELSIF jsonb_typeof(v_val) = 'number' THEN
+                    v_val_text := v_val::text;
+                    IF length(v_val_text) >= 4 THEN
+                        v_masked_phone := repeat('X', greatest(length(v_val_text) - 4, 2)) || right(v_val_text, 4);
+                        v_clean := v_clean || jsonb_build_object(v_key, to_jsonb(v_masked_phone));
+                    ELSE
+                        v_clean := v_clean || jsonb_build_object(v_key, to_jsonb(repeat('X', length(v_val_text))));
+                    END IF;
+                    CONTINUE;
+                END IF;
+            END IF;
+
+            -- 3. Recursively sanitize nested structures
+            IF jsonb_typeof(v_val) IN ('object', 'array') THEN
+                v_clean := v_clean || jsonb_build_object(v_key, public.sanitize_audit_payload(v_val));
+            ELSE
+                v_clean := v_clean || jsonb_build_object(v_key, v_val);
+            END IF;
+        END LOOP;
+
+        RETURN v_clean;
+    END IF;
+
+    RETURN p_data;
 END;
 $$;
 

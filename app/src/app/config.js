@@ -1,7 +1,7 @@
 export const APP_CONFIG = {
     appName: "Village Mitra",
     appNameRegional: "గ్రామ మిత్ర",
-    defaultVillageId: "00000000-0000-0000-0000-000000000001",
+    defaultVillageId: null,
     storageKeys: {
         language: "csp_app_lang",
         zoom: "csp_app_zoom",

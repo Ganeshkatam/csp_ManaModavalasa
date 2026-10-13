@@ -1,4 +1,4 @@
-import { supabase, DEFAULT_VILLAGE_ID } from '../../../lib/supabase';
+import { supabase, DEFAULT_VILLAGE_ID, resolveVillageId } from '../../../lib/supabase.js';
 
 export const villageService = {
     async getVillageProfile() {
@@ -32,7 +32,8 @@ export const villageService = {
             const res = await supabase.from('villages').update(payload).eq('id', existing[0].id);
             error = res.error;
         } else {
-            const res = await supabase.from('villages').insert([{ id: DEFAULT_VILLAGE_ID, ...payload }]);
+            const villageId = await resolveVillageId();
+            const res = await supabase.from('villages').insert([{ id: villageId, ...payload }]);
             error = res.error;
         }
 

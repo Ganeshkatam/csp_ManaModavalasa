@@ -1,4 +1,4 @@
-import { supabase, DEFAULT_VILLAGE_ID } from '../../../lib/supabase.js';
+import { supabase, DEFAULT_VILLAGE_ID, resolveVillageId } from '../../../lib/supabase.js';
 
 /**
  * Normalizes input search query strings by trimming and truncating to maximum 100 characters.
@@ -27,8 +27,16 @@ export async function searchPortal(query, options = {}) {
         return [];
     }
 
+    let targetVillageId = options.villageId || DEFAULT_VILLAGE_ID;
+    if (!targetVillageId) {
+        try {
+            targetVillageId = await resolveVillageId();
+        } catch {
+            targetVillageId = null;
+        }
+    }
+
     const {
-        villageId = DEFAULT_VILLAGE_ID,
         limit = 20,
         signal
     } = options;
@@ -39,7 +47,7 @@ export async function searchPortal(query, options = {}) {
 
     let queryBuilder = supabase.rpc('search_portal', {
         p_query: cleanQuery,
-        p_village_id: villageId,
+        p_village_id: targetVillageId,
         p_limit: Math.min(Math.max(limit, 1), 50)
     });
 

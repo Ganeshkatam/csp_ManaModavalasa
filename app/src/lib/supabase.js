@@ -4,7 +4,61 @@ const env = (typeof import.meta !== 'undefined' && import.meta.env) ? import.met
 
 export const SUPABASE_URL = env.VITE_SUPABASE_URL || '';
 export const SUPABASE_ANON_KEY = env.VITE_SUPABASE_ANON_KEY || '';
-export const DEFAULT_VILLAGE_ID = env.VITE_DEFAULT_VILLAGE_ID || '00000000-0000-0000-0000-000000000001';
+export function isValidUuid(str) {
+    if (!str || typeof str !== 'string') return false;
+    return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(str.trim());
+}
+
+const rawDefaultVillageId = env.VITE_DEFAULT_VILLAGE_ID;
+export const DEFAULT_VILLAGE_ID = (rawDefaultVillageId && isValidUuid(rawDefaultVillageId))
+    ? rawDefaultVillageId.trim()
+    : null;
+
+let cachedResolvedVillageId = null;
+
+export function clearVillageCache() {
+    cachedResolvedVillageId = null;
+}
+
+/**
+ * Resolves the active village identifier.
+ * Priority:
+ * 1. Validated environment configuration (VITE_DEFAULT_VILLAGE_ID) if provided.
+ * 2. In-memory cached village UUID if previously resolved.
+ * 3. Explicit database lookup against the villages table.
+ * If all sources fail, throws an explicit Error rather than silently falling back to a fixed identifier.
+ *
+ * @param {Object} [client=supabase] Supabase database client
+ * @returns {Promise<string>} Valid UUID of the target village
+ */
+export async function resolveVillageId(client = supabase) {
+    if (DEFAULT_VILLAGE_ID) {
+        return DEFAULT_VILLAGE_ID;
+    }
+    if (cachedResolvedVillageId) {
+        return cachedResolvedVillageId;
+    }
+    if (!client || typeof client.from !== 'function') {
+        throw new Error('Village resolution failed: Supabase client is not available or unconfigured.');
+    }
+
+    const { data, error } = await client
+        .from('villages')
+        .select('id')
+        .limit(1);
+
+    if (error) {
+        throw new Error(`Village resolution failed during database query: ${error.message || 'Database error'}`);
+    }
+
+    const candidateId = Array.isArray(data) && data.length > 0 ? data[0]?.id : data?.id;
+    if (candidateId && isValidUuid(candidateId)) {
+        cachedResolvedVillageId = candidateId;
+        return cachedResolvedVillageId;
+    }
+
+    throw new Error('Unable to resolve village identifier: No valid VITE_DEFAULT_VILLAGE_ID configured and no village records found in the database. Administrative context must be configured.');
+}
 
 export function validateSupabaseConfig(url, anonKey) {
     if (!url || typeof url !== 'string' || !url.trim()) {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Wifi, WifiOff, RefreshCw, CheckCircle2, AlertCircle, Check } from 'lucide-react';
-import { supabase, DEFAULT_VILLAGE_ID } from '../lib/supabase';
+import { supabase, DEFAULT_VILLAGE_ID, resolveVillageId } from '../lib/supabase';
 import CustomSelect from '../components/CustomSelect';
 import { SURVEY_CANONICAL_OPTIONS } from '../lib/surveyConstants';
 import { validateSurveyForm, buildSurveyPayload } from '../utils/surveyValidation';
@@ -84,10 +84,14 @@ export default function SurveyFormView() {
     const loadVerifiedLocalities = useCallback(async () => {
         setLoadingLocalities(true);
         try {
-            const { data, error } = await supabase
+            const targetVillageId = await resolveVillageId().catch(() => DEFAULT_VILLAGE_ID);
+            let query = supabase
                 .from('village_localities')
-                .select('locality_name')
-                .eq('village_id', DEFAULT_VILLAGE_ID)
+                .select('locality_name');
+            if (targetVillageId) {
+                query = query.eq('village_id', targetVillageId);
+            }
+            const { data, error } = await query
                 .eq('status', 'Active')
                 .order('locality_name', { ascending: true });
 
@@ -243,7 +247,8 @@ export default function SurveyFormView() {
         setStatusMsg(null);
 
         const clientUuid = generateClientUuid();
-        const payload = buildSurveyPayload(formData, clientUuid, startTime, DEFAULT_VILLAGE_ID);
+        const targetVillageId = await resolveVillageId().catch(() => DEFAULT_VILLAGE_ID);
+        const payload = buildSurveyPayload(formData, clientUuid, startTime, targetVillageId);
 
         // If offline: save into local idempotent queue
         if (!navigator.onLine) {

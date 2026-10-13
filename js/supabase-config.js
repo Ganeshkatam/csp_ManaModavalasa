@@ -6,7 +6,7 @@
 const SUPABASE_CONFIG = {
     url: window.SUPABASE_URL || (window.ENV && window.ENV.SUPABASE_URL) || "",
     anonKey: window.SUPABASE_ANON_KEY || (window.ENV && window.ENV.SUPABASE_ANON_KEY) || "",
-    defaultVillageId: window.DEFAULT_VILLAGE_ID || (window.ENV && window.ENV.DEFAULT_VILLAGE_ID) || "00000000-0000-0000-0000-000000000001"
+    defaultVillageId: window.DEFAULT_VILLAGE_ID || (window.ENV && window.ENV.DEFAULT_VILLAGE_ID) || null
 };
 
 // Initialize Supabase Client
