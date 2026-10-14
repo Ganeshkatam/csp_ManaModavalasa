@@ -1,12 +1,12 @@
 export default {
-    govtState: "COMMUNITY SERVICE PROJECT (CSP) | B.TECH CSE",
-    govtDept: "Department of Computer Science & Engineering",
-    projectBadge: "Community Service Project (CSP) • Department of Computer Science & Engineering",
+    govtState: "MODAVALASA GRAM PANCHAYAT | DENKADA MANDAL",
+    govtDept: "Department of Panchayati Raj & Rural Development",
+    projectBadge: "ManaModavalasa • Digital Village Information Portal",
     portalTitleRegional: "మన మోదవలస",
     portalTitleEn: "ManaModavalasa",
-    portalSubtitle: "Our village. Our community. • Academic CSP Initiative",
+    portalSubtitle: "Our village. Our community. • Modavalasa Gram Panchayat",
     digitalIndiaTag: "ManaModavalasa",
-    digitalIndiaSub: "Academic CSP Project",
+    digitalIndiaSub: "Digital Village Portal",
 
     // Nav
     navHome: "Home",
@@ -19,6 +19,7 @@ export default {
     navSurvey: "Field Survey",
     navDashboard: "Analytics",
     navAdmin: "Admin Console",
+    navAbout: "About Project",
 
     // Emergency Band
     emergencyHelplines: "EMERGENCY HELPLINES (24x7 TOLL-FREE):",
@@ -112,7 +113,7 @@ export default {
     evidenceAdmin: "Official Administrative Record",
     evidenceSurvey: "Community Survey Finding",
     evidenceInstitution: "Verified Local Institution",
-    evidenceObservation: "CSP Field Survey Observation",
+    evidenceObservation: "Local Survey & Field Observation",
     pillarAdminTitle: "Administrative Jurisdiction",
     pillarLivelihoodTitle: "Livelihood & Economy",
     pillarInstitutionsTitle: "Healthcare & Education",
@@ -122,7 +123,10 @@ export default {
     viewHealthcareServices: "View Healthcare Services",
 
     // Footer
-    footerDisclaimer: "Content Verified Under Academic CSP Protocol. Strictly No Resident PII Collected.",
+    footerDisclaimer: "Independent civic information initiative. Content verified with local records. Strictly zero resident PII collected.",
     footerDb: "Database: Supabase PostgreSQL (RLS Protected)",
-    footerCopyright: "Community Service Project (CSP) — Department of Computer Science and Engineering"
+    footerCopyright: "ManaModavalasa — Modavalasa Gram Panchayat Civic Information Portal",
+    footerAboutText: "Digital village information portal providing verified public services, welfare schemes, emergency contacts, and civic infrastructure data for Modavalasa Gram Panchayat.",
+    footerCivicBadge: "Independent Civic Information Initiative",
+    nonGovDisclaimer: "ManaModavalasa is an independent educational and civic project created to provide verified public information. It is not an official government portal. For statutory applications, visit official Andhra Pradesh portals or the Grama Sachivalayam."
 };

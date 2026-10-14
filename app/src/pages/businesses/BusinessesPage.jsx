@@ -50,7 +50,7 @@ export function BusinessesPage() {
                         <span className="badge badge-warning">
                             <Store size={12} style={{ marginRight: '3px' }} /> Rural Commerce &amp; Artisans
                         </span>
-                        <span className="badge badge-verified">CSP Ground Surveyed</span>
+                        <span className="badge badge-verified">Ground Surveyed</span>
                     </div>
                     <h1 className="page-title">{t?.businessesTitle || 'Local Businesses & Artisans'}</h1>
                     <p className="page-subtitle">

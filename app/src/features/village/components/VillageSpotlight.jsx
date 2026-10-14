@@ -58,7 +58,7 @@ export function VillageSpotlight({ village, lang }) {
             </div>
 
             <div className="card-verify-tag" style={{ marginTop: '1rem' }}>
-                <span>Source: {village.source || 'CSP Field Survey'}</span>
+                <span>Source: {village.source || 'Local Ground Survey'}</span>
                 <span>Verified: {village.verified_on || 'Current'}</span>
             </div>
         </div>

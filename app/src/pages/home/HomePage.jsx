@@ -136,7 +136,7 @@ export function HomePage() {
     ];
 
     const infraObservations = [
-        { service: 'Drinking Water', observation: 'Functional RO filtration plant & overhead reservoir', source: 'CSP Field Survey & Panchayat', date: 'Aug 2024' },
+        { service: 'Drinking Water', observation: 'Functional RO filtration plant & overhead reservoir', source: 'Local Field Survey & Panchayat', date: 'Aug 2024' },
         { service: 'Rural Electricity', observation: '24x7 domestic grid supply; agricultural feeder on scheduled roster', source: 'APEPDCL Feeder Roster', date: 'Aug 2024' },
         { service: 'Concrete Roads', observation: 'Internal CC roads completed; main approach road under maintenance', source: 'Gram Panchayat Records', date: 'Aug 2024' },
         { service: 'Streetlights', observation: 'LED street fixtures installed across primary habitation lanes', source: 'Field Survey Observation', date: 'Aug 2024' },
@@ -151,7 +151,7 @@ export function HomePage() {
                     <div className="hero-content-col">
                         <div className="hero-project-badge">
                             <span className="badge-dot" aria-hidden="true"></span>
-                            <span>{t?.projectBadge || 'Academic CSP Initiative • B.Tech CSE'}</span>
+                            <span>{t?.projectBadge || 'ManaModavalasa • Digital Village Portal'}</span>
                         </div>
 
                         <h1 className="hero-title">
@@ -172,7 +172,7 @@ export function HomePage() {
                                     ? `${village.gram_panchayat_te || village.gram_panchayat} గ్రామ పంచాయతీ • ${village.mandal_te || village.mandal} మండలం • ${village.district_te || village.district} జిల్లా • ${village.state_te || 'ఆంధ్రప్రదేశ్'}`
                                     : `${village.gram_panchayat} Gram Panchayat • ${village.mandal} Mandal • ${village.district} District • ${village.state || 'Andhra Pradesh'}`
                                   )
-                                : (t?.portalSubtitle || 'Our village. Our community. • Academic CSP Initiative')
+                                : (t?.portalSubtitle || 'Our village. Our community. • Modavalasa Gram Panchayat')
                             }
                         </p>
 
@@ -417,7 +417,7 @@ export function HomePage() {
                                     </h3>
                                 </div>
                                 <span className="village-pillar-evidence-tag evidence-tag-observation">
-                                    {t?.evidenceObservation || 'CSP Survey Observation'}
+                                    {t?.evidenceObservation || 'Local Survey & Field Observation'}
                                 </span>
                             </div>
                             <div className="village-pillar-content">
@@ -729,7 +729,7 @@ export function HomePage() {
                                     <p style={{ fontSize: '0.875rem', color: 'var(--color-slate-600)', lineHeight: '1.65', marginBottom: '1.25rem' }}>
                                         {isTe 
                                             ? "మోదవలస పరిధిలోని చేనేత క్లస్టర్లు, పాల సేకరణ కేంద్రాలు మరియు స్థానిక దుకాణాల వివరాలు అధికారిక పంచాయతీ రికార్డులు మరియు క్షేత్ర సర్వే ఆధారంగా ధృవీకరించబడుతున్నాయి. డేటా ప్రామాణికత నిబంధనల ప్రకారం కల్పిత లేదా ధృవీకరించని రికార్డులు ప్రచురించబడవు."
-                                            : "Local commercial, cooperative, and artisanal listings are being verified against official administrative registers and ground survey logs. In accordance with strict CSP data provenance gates, synthetic or unverified business entries are withheld from publication until individual record-level proof is established."
+                                            : "Local commercial, cooperative, and artisanal listings are being verified against official administrative registers and ground survey logs. In accordance with data verification standards, synthetic or unverified business entries are withheld from publication until individual record-level proof is established."
                                         }
                                     </p>
                                     <span className="badge badge-warning" style={{ fontSize: '0.78rem', fontWeight: 700, padding: '0.35rem 0.85rem' }}>
@@ -798,7 +798,7 @@ export function HomePage() {
                             </h3>
                         </div>
                         <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-slate-500)', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
-                            CSP Ground Survey Observations (Verified Aug 2024)
+                            Local Ground Survey Observations (Verified Aug 2024)
                         </div>
                         <p style={{ fontSize: '0.875rem', color: 'var(--color-slate-600)', lineHeight: '1.6', marginBottom: '0.75rem' }}>
                             Verifiable field assessments across key public utilities serving Modavalasa habitation.

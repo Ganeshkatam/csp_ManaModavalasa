@@ -98,8 +98,8 @@ export const LIVELIHOOD_PROFILE = {
     provenance: {
         evidenceClass: 'Community Survey Finding',
         evidenceClassTe: 'కమ్యూనిటీ సర్వే పరిశీలన',
-        source: 'CSP Field Survey & Community Interviews (Aug 2024)',
-        sourceTe: 'సీఎస్పీ క్షేత్రస్థాయి సర్వే మరియు స్థానిక పరిశీలనలు (ఆగస్టు 2024)'
+        source: 'Ground Survey & Community Interviews (Aug 2024)',
+        sourceTe: 'గ్రామ క్షేత్రస్థాయి సర్వే మరియు స్థానిక పరిశీలనలు (ఆగస్టు 2024)'
     }
 };
 
@@ -134,8 +134,8 @@ export const CIVIC_INFRASTRUCTURE = {
     drinkingWater: {
         title: 'Drinking Water Supply',
         titleTe: 'తాగునీటి సరఫరా',
-        desc: 'RO water purification plant and overhead reservoir observed during CSP field survey.',
-        descTe: 'ఆర్వో శుద్ధి ప్లాంట్ మరియు ఓవర్‌హెడ్ రిజర్వాయర్ సౌకర్యం (సర్వేలో పరిశీలించబడింది).'
+        desc: 'RO water purification plant and overhead reservoir observed during local field survey.',
+        descTe: 'ఆర్వో శుద్ధి ప్లాంట్ మరియు ఓవర్‌హెడ్ రిజర్వాయర్ సౌకర్యం (గ్రామ సర్వేలో పరిశీలించబడింది).'
     },
     electricity: {
         title: 'Rural Electricity Grid (APEPDCL)',
@@ -156,10 +156,10 @@ export const CIVIC_INFRASTRUCTURE = {
         descTe: 'డెంకాడ మండల కేంద్రం మరియు విజయనగరం పట్టణానికి అన్ని కాలాల్లో ప్రయాణించదగిన పక్కా రహదారి అనుసంధానం.'
     },
     provenance: {
-        evidenceClass: 'CSP Field Survey Observation',
-        evidenceClassTe: 'సీఎస్పీ క్షేత్రస్థాయి పరిశీలన',
-        source: 'CSP Ground Survey Log (Aug 2024)',
-        sourceTe: 'సీఎస్పీ క్షేత్ర పరిశీలనల రికార్డు (ఆగస్టు 2024)'
+        evidenceClass: 'Local Survey & Field Observation',
+        evidenceClassTe: 'స్థానిక క్షేత్ర పరిశీలన',
+        source: 'Village Ground Survey (Aug 2024)',
+        sourceTe: 'గ్రామ క్షేత్ర పరిశీలనల రికార్డు (ఆగస్టు 2024)'
     }
 };
 

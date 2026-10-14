@@ -35,13 +35,12 @@ export function Footer() {
                         </div>
 
                         <p style={{ fontSize: '0.85rem', color: 'var(--color-slate-400)', lineHeight: '1.6' }}>
-                            Community Service Project (CSP) • Department of Computer Science and Engineering.
-                            Conducted in compliance with APSCHE Internship Guidelines (G.O. Ms. No. 46).
+                            {t?.footerAboutText || 'Digital village information portal providing verified public services, welfare schemes, emergency contacts, and civic infrastructure data for Modavalasa Gram Panchayat.'}
                         </p>
 
                         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', color: 'var(--color-emerald-400)', marginTop: '0.5rem', fontWeight: 600 }}>
                             <ShieldCheck size={14} />
-                            <span>Academic CSP Field Study • B.Tech CSE</span>
+                            <span>{t?.footerCivicBadge || 'Independent Civic Information Initiative'}</span>
                         </div>
                     </div>
 
@@ -58,12 +57,13 @@ export function Footer() {
                         </ul>
                     </div>
 
-                    {/* Column 3: CSP Academic Services */}
+                    {/* Column 3: Community & Project */}
                     <div>
-                        <h4 className="footer-col-title">CSP Research</h4>
+                        <h4 className="footer-col-title">Community &amp; Project</h4>
                         <ul className="footer-link-list">
-                            <li><Link to="/announcements">Public Notices</Link></li>
+                            <li><Link to="/about">About This Project</Link></li>
                             <li><Link to="/village">Village Profile</Link></li>
+                            <li><Link to="/announcements">Public Notices</Link></li>
                             <li><Link to="/feedback">Citizen Feedback</Link></li>
                             <li><Link to="/survey">Household Survey</Link></li>
                             <li><Link to="/dashboard">Analytics Dashboard</Link></li>
@@ -91,11 +91,21 @@ export function Footer() {
                     </div>
                 </div>
 
+                {/* Non-Government Disclaimer */}
+                <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', margin: '1.75rem 0 1rem', paddingTop: '1.25rem', fontSize: '0.78rem', color: 'var(--color-slate-400)', lineHeight: '1.6' }}>
+                    <p style={{ margin: 0 }}>
+                        <strong style={{ color: 'var(--color-slate-300)' }}>Notice:</strong>{' '}
+                        {t?.nonGovDisclaimer || 'ManaModavalasa is an independent educational and civic project created to provide verified public information. It is not an official government portal. For statutory applications, visit official Andhra Pradesh portals or the Grama Sachivalayam.'}
+                    </p>
+                </div>
+
                 <div className="footer-bottom-bar">
                     <div>
-                        {t?.footerCopyright || 'Community Service Project (CSP) — Department of Computer Science & Engineering'}
+                        {t?.footerCopyright || 'ManaModavalasa — Modavalasa Gram Panchayat Civic Information Portal'}
                     </div>
-                    <div style={{ display: 'flex', gap: '1rem' }}>
+                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                        <Link to="/about" style={{ color: 'var(--color-slate-400)', textDecoration: 'underline' }}>About &amp; Attribution</Link>
+                        <span>•</span>
                         <span>Database: Supabase PostgreSQL</span>
                         <span>•</span>
                         <span>Zero Resident PII</span>

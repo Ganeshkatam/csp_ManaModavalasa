@@ -102,6 +102,7 @@ const AnnouncementDetailsPage = lazyWithRetry(() => import('../pages/announcemen
 const SearchPage = lazyWithRetry(() => import('../pages/search/SearchPage'));
 const VillagePage = lazyWithRetry(() => import('../pages/village/VillagePage'));
 const FeedbackPage = lazyWithRetry(() => import('../pages/feedback/FeedbackPage'));
+const AboutPage = lazyWithRetry(() => import('../pages/about/AboutPage'));
 const SurveyPage = lazyWithRetry(() => import('../pages/survey/SurveyPage'));
 const DashboardPage = lazyWithRetry(() => import('../pages/dashboard/DashboardPage'));
 const AdminPage = lazyWithRetry(() => import('../pages/admin/AdminPage'));
@@ -129,7 +130,8 @@ export const router = createBrowserRouter([
             { path: 'announcements', element: withSuspense(AnnouncementsPage) },
             { path: 'announcements/:announcementId', element: withSuspense(AnnouncementDetailsPage) },
             { path: 'village', element: withSuspense(VillagePage) },
-            { path: 'feedback', element: withSuspense(FeedbackPage) }
+            { path: 'feedback', element: withSuspense(FeedbackPage) },
+            { path: 'about', element: withSuspense(AboutPage) }
         ]
     },
     {

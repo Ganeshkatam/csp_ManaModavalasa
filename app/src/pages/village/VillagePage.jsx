@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { 
     Landmark, Users, Building, 
     Droplets, Zap, Compass, 
@@ -72,8 +73,8 @@ export function VillagePage() {
                     </h1>
                     <p className="page-subtitle">
                         {isTe 
-                            ? "కమ్యూనిటీ సర్వీస్ ప్రాజెక్ట్ (CSP) క్రింద అధికారిక సరిహద్దులు, జనాభా లెక్కలు, పౌర మౌలిక సదుపాయాలు మరియు భౌగోళిక వివరాలు."
-                            : "Authoritative administrative boundaries, official Census 2011 demographics, empirical civic infrastructure status, and geographical connectivity surveyed under the Community Service Project (CSP)."
+                            ? "మోదవలస గ్రామ అధికారిక సరిహద్దులు, సెన్సస్ 2011 జనాభా వివరాలు, పౌర మౌలిక సదుపాయాలు మరియు భౌగోళిక అనుసంధానం."
+                            : "Authoritative administrative boundaries, official Census 2011 demographics, civic infrastructure status, and geographical connectivity for Modavalasa Gram Panchayat."
                         }
                     </p>
                 </div>
@@ -248,8 +249,8 @@ export function VillagePage() {
                             </div>
                             <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-slate-500)', textTransform: 'uppercase', marginBottom: '1rem' }}>
                                 {isTe 
-                                    ? "గ్రామ పంచాయతీ రికార్డులు మరియు CSP గ్రౌండ్ సర్వే ద్వారా నమోదైన పరిశీలనలు"
-                                    : "Empirical observations from CSP field surveying and Gram Panchayat utility logbooks"
+                                    ? "గ్రామ పంచాయతీ రికార్డులు మరియు స్థానిక క్షేత్ర పరిశీలనల ద్వారా నమోదైన వివరాలు"
+                                    : "Empirical observations from local field surveying and Gram Panchayat utility logbooks"
                                 }
                             </div>
 
@@ -444,27 +445,28 @@ export function VillagePage() {
                             </div>
                         </div>
 
-                        {/* CSP Academic Research Metadata */}
+                        {/* Data Sources & Verification */}
                         <div className="civic-card" style={{ padding: '1.5rem' }}>
                             <h4 style={{ fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--color-slate-500)', marginBottom: '0.85rem' }}>
-                                {isTe ? "ప్రాజెక్ట్ ధృవీకరణ వివరాలు" : "CSP Project Attributions"}
+                                {isTe ? "సమాచార వనరులు & ధృవీకరణ" : "Data Sources & Verification"}
                             </h4>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.8125rem' }}>
                                 <div>
                                     <div style={{ color: 'var(--color-slate-500)', fontWeight: 600 }}>Field Verification Source</div>
-                                    <div style={{ color: 'var(--color-slate-900)', fontWeight: 600 }}>{village?.source || 'Gram Panchayat & CSP Field Survey'}</div>
+                                    <div style={{ color: 'var(--color-slate-900)', fontWeight: 600 }}>{village?.source || 'Gram Panchayat Records & Field Survey'}</div>
                                 </div>
                                 <div>
                                     <div style={{ color: 'var(--color-slate-500)', fontWeight: 600 }}>Verification Date</div>
                                     <div style={{ color: 'var(--color-slate-900)', fontWeight: 600 }}>{village?.verified_on || 'August 2024'}</div>
                                 </div>
                                 <div>
-                                    <div style={{ color: 'var(--color-slate-500)', fontWeight: 600 }}>Academic Scope</div>
-                                    <div style={{ color: 'var(--color-slate-900)', fontWeight: 600 }}>B.Tech CSE Community Service Project</div>
-                                </div>
-                                <div>
                                     <div style={{ color: 'var(--color-slate-500)', fontWeight: 600 }}>Data Standard</div>
                                     <div style={{ color: 'var(--color-slate-900)', fontWeight: 600 }}>Census of India 2011 + Ground Survey</div>
+                                </div>
+                                <div style={{ borderTop: '1px solid var(--color-slate-200)', paddingTop: '0.5rem', marginTop: '0.25rem' }}>
+                                    <Link to="/about" style={{ color: 'var(--color-blue-600)', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                                        <span>{isTe ? "ప్రాజెక్ట్ నేపథ్యం గురించి చూడండి ->" : "About this civic initiative & field study ->"}</span>
+                                    </Link>
                                 </div>
                             </div>
                         </div>

@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { 
     X, Home, FileText, Phone, Activity, GraduationCap, 
     Store, Bell, Landmark, MessageSquare, ClipboardList, 
-    BarChart3, LogOut, ShieldCheck 
+    BarChart3, LogOut, ShieldCheck, Info 
 } from 'lucide-react';
 
 export function MobileDrawer({ isOpen, onClose, user, onSignOut, lang }) {
@@ -40,7 +40,8 @@ export function MobileDrawer({ isOpen, onClose, user, onSignOut, lang }) {
         { to: '/village', label: 'Village Information', icon: <Landmark size={18} /> },
         { to: '/feedback', label: 'Citizen Feedback', icon: <MessageSquare size={18} /> },
         { to: '/survey', label: 'Field Survey Form', icon: <ClipboardList size={18} /> },
-        { to: '/dashboard', label: 'Survey Analytics', icon: <BarChart3 size={18} /> }
+        { to: '/dashboard', label: 'Survey Analytics', icon: <BarChart3 size={18} /> },
+        { to: '/about', label: lang === 'te' ? 'ప్రాజెక్ట్ గురించి' : 'About Project', icon: <Info size={18} /> }
     ];
 
     return (

@@ -34,7 +34,7 @@ export function Header() {
                     <div className="utility-govt">
                         <span className="utility-flag-dot" aria-hidden="true"></span>
                         <span className="utility-govt-text">
-                            {t?.projectBadge || 'Community Service Project (CSP) • Department of CSE'}
+                            {t?.projectBadge || 'ManaModavalasa • Digital Village Information Portal'}
                         </span>
                     </div>
 
