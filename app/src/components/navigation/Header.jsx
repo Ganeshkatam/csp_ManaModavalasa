@@ -93,8 +93,8 @@ export function Header() {
             <div className="clean-main-nav">
                 <div className="container main-nav-inner">
                     <Link to="/" className="nav-brand">
-                        <div className="nav-emblem" aria-hidden="true">
-                            <Landmark size={20} />
+                        <div className="nav-emblem" aria-hidden="true" style={{ overflow: 'hidden', padding: 0 }}>
+                            <img src="/images/logo.png" alt="ManaModavalasa Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                         </div>
                         <div className="nav-brand-text">
                             <span className="nav-brand-title">{t?.portalTitleEn || 'ManaModavalasa'}</span>

@@ -21,8 +21,8 @@ export function Footer() {
                     {/* Column 1: Project Identity */}
                     <div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.85rem' }}>
-                            <div className="nav-emblem" style={{ background: 'var(--color-slate-800)', borderColor: 'var(--color-slate-700)', color: '#ffffff' }}>
-                                <Landmark size={20} />
+                            <div className="nav-emblem" style={{ background: 'transparent', borderColor: 'rgba(255,255,255,0.15)', overflow: 'hidden', padding: 0 }}>
+                                <img src="/images/logo.png" alt="ManaModavalasa Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                             </div>
                             <div>
                                 <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff', margin: 0 }}>
