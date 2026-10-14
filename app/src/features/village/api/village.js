@@ -1,4 +1,4 @@
-import { supabase, DEFAULT_VILLAGE_ID, resolveVillageId } from '../../../lib/supabase.js';
+import { supabase, resolveVillageId } from '../../../lib/supabase.js';
 
 export const villageService = {
     async getVillageProfile() {

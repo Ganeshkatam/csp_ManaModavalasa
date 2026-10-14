@@ -128,7 +128,7 @@ test('feedbackService handles duplicate reference_id during sync as already sync
     }
 
     const mockDuplicateSupabase = {
-        from: (table) => ({
+        from: (_table) => ({
             insert: async () => ({
                 data: null,
                 error: { code: '23505', message: 'duplicate key value violates unique constraint' }

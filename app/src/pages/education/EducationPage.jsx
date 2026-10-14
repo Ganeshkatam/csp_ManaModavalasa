@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { GraduationCap, BookOpen, Clock, ShieldCheck, Utensils, Baby, Award, PhoneCall, ArrowLeft } from 'lucide-react';
+import { useParams } from 'react-router-dom';
+import { GraduationCap, Utensils, Baby, Award, PhoneCall } from 'lucide-react';
 import { useAppContext } from '../../app/providers';
 import { 
     educationService,

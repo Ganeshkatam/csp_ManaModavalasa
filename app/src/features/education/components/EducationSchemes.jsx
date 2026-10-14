@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Award, ArrowRight, BookOpen } from 'lucide-react';
+import { Award, ArrowRight } from 'lucide-react';
 
 export function EducationSchemes({ lang }) {
     const isTe = lang === 'te';

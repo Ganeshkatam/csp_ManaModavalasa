@@ -1,5 +1,5 @@
 import React from 'react';
-import { Activity, ShieldCheck, Clock, MapPin, Phone } from 'lucide-react';
+import { Activity, ShieldCheck, Clock } from 'lucide-react';
 import { HealthcareCard } from './HealthcareCard';
 import { LoadingState } from '../../../components/feedback/LoadingState';
 import { ErrorState } from '../../../components/feedback/ErrorState';

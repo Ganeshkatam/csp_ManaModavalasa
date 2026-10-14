@@ -1,8 +1,8 @@
 import React from 'react';
-import { PhoneCall, AlertTriangle, Calendar, ShieldCheck, HeartPulse, CheckCircle } from 'lucide-react';
+import { PhoneCall, Calendar, ShieldCheck, HeartPulse, CheckCircle } from 'lucide-react';
 import { useAppContext } from '../../../app/providers';
 
-export function EmergencyGuidance({ announcements = [], loading = false, lang }) {
+export function EmergencyGuidance({ announcements = [], loading: _loading = false, lang }) {
     const appContext = useAppContext();
     const currentLang = lang || appContext?.lang || 'en';
     const isTe = currentLang === 'te';

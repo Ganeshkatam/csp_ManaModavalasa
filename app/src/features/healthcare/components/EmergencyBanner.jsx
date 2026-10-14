@@ -1,5 +1,5 @@
 import React from 'react';
-import { Phone, Siren, ShieldCheck, AlertCircle, HeartHandshake } from 'lucide-react';
+import { Phone, Siren, ShieldCheck, AlertCircle } from 'lucide-react';
 import { createTelLink } from '../../../utils/phone';
 
 const OFFICIAL_AP_HELPLINES = [

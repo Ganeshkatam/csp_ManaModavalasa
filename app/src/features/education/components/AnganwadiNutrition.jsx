@@ -1,5 +1,5 @@
 import React from 'react';
-import { Baby, ShieldCheck, HeartPulse, Sparkles, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Baby, ShieldCheck, HeartPulse } from 'lucide-react';
 import { anganwadiNutritionData } from '../data/anganwadiNutritionData';
 
 export function AnganwadiNutrition({ lang }) {

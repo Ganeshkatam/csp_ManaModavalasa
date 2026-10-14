@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, MapPin, Building, Landmark } from 'lucide-react';
+import { ShieldCheck, MapPin, Landmark } from 'lucide-react';
 import { getLocalized } from '../../../i18n';
 
 export function VillageSpotlight({ village, lang }) {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Stethoscope, Clock, Calendar, MapPin, CheckCircle, ShieldCheck, Activity, LayoutGrid, Table, UserCheck } from 'lucide-react';
+import { Stethoscope, Clock, Calendar, MapPin, CheckCircle, ShieldCheck, Activity, LayoutGrid, Table } from 'lucide-react';
 import { useAppContext } from '../../../app/providers';
 
 export function ClinicalSchedule({ schedules = [], loading = false, lang }) {
@@ -8,9 +8,7 @@ export function ClinicalSchedule({ schedules = [], loading = false, lang }) {
     const isTe = currentLang === 'te';
     const [viewMode, setViewMode] = useState('cards');
 
-    const todayIndex = new Date().getDay();
-    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const currentDayName = dayNames[todayIndex];
+
 
     if (loading) {
         return (

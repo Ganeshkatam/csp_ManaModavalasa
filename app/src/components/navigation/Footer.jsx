@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Phone, ShieldCheck, Landmark } from 'lucide-react';
+import { Phone, ShieldCheck } from 'lucide-react';
 import { useAppContext } from '../../app/providers';
 import { createTelLink } from '../../utils/phone';
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Bell, Calendar, ShieldCheck } from 'lucide-react';
+import { Bell } from 'lucide-react';
 import { useAppContext } from '../../app/providers';
 import { announcementService } from '../../features/announcements/api/announcements';
 import { AnnouncementCard } from '../../features/announcements/components/AnnouncementCard';

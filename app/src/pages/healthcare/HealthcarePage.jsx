@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { 
-    Activity, ShieldCheck, HeartPulse, Calendar, 
-    Phone, Award, Stethoscope, Syringe, FlaskConical, Building2, Users
+    Activity, ShieldCheck, Stethoscope, Syringe, FlaskConical, Building2, Users
 } from 'lucide-react';
 import { useAppContext } from '../../app/providers';
 import { 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Phone, Clock, User, CheckCircle2, ShieldCheck, MapPin, Activity } from 'lucide-react';
+import { Phone, Clock, CheckCircle2, ShieldCheck, MapPin, Activity } from 'lucide-react';
 import { getLocalized } from '../../../i18n';
 import { formatPhoneDisplay, createTelLink } from '../../../utils/phone';
 

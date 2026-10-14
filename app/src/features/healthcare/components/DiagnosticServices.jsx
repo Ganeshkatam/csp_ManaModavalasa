@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { FlaskConical, Search, Clock, CheckCircle, ShieldCheck, FileText, Check, CheckCircle2, Activity } from 'lucide-react';
+import { FlaskConical, Search, Clock, CheckCircle, FileText, Check, CheckCircle2, Activity } from 'lucide-react';
 import { useAppContext } from '../../../app/providers';
 
 export function DiagnosticServices({ diagnostics = [], loading = false, lang }) {
@@ -132,7 +132,7 @@ export function DiagnosticServices({ diagnostics = [], loading = false, lang }) 
 
             {/* Diagnostic Test Grid */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.15rem' }}>
-                {filteredDiagnostics.map((item, idx) => {
+                {filteredDiagnostics.map((item) => {
                     const isMalariaOrSpot = item.category?.toLowerCase().includes('vector') || item.turnaround_time?.toLowerCase().includes('immediate') || item.turnaround_time?.toLowerCase().includes('minutes');
                     const accentColor = isMalariaOrSpot ? 'var(--color-emerald-500)' : 'var(--color-indigo-500)';
 

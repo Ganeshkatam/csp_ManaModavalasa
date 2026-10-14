@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Utensils, ShieldCheck, Info, CheckCircle2, FileText, ChevronRight } from 'lucide-react';
+import { Utensils, ShieldCheck } from 'lucide-react';
 import { midDayMealStandards } from '../data/midDayMealStandards';
 import { midDayMealMenuData } from '../data/midDayMealMenuData';
 

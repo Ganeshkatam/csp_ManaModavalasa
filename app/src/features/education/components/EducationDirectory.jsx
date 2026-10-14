@@ -6,7 +6,7 @@ import { LoadingState } from '../../../components/feedback/LoadingState';
 import { ErrorState } from '../../../components/feedback/ErrorState';
 import { EmptyState } from '../../../components/ui/EmptyState';
 
-export function EducationDirectory({ institutions, loading, error, onRetry, lang, t }) {
+export function EducationDirectory({ institutions, loading, error, onRetry, lang, _t }) {
     const isTe = lang === 'te';
 
     return (

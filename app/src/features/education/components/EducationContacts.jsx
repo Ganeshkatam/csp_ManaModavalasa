@@ -1,5 +1,5 @@
 import React from 'react';
-import { Phone, ShieldCheck, MapPin, Clock, HelpCircle, PhoneCall } from 'lucide-react';
+import { Phone, ShieldCheck, MapPin, Clock, PhoneCall } from 'lucide-react';
 import { educationContactsData } from '../data/educationContactsData';
 import { formatPhoneDisplay, createTelLink } from '../../../utils/phone';
 

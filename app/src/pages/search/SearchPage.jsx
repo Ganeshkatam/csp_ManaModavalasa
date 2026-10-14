@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Search, Compass } from 'lucide-react';
+import { Compass } from 'lucide-react';
 import { useAppContext } from '../../app/providers';
 import { useGlobalSearch, GlobalSearch, SearchResults } from '../../features/search';
 

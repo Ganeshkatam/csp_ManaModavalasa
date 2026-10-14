@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Award, ArrowRight, ShieldCheck, CheckCircle2, FileText, ExternalLink } from 'lucide-react';
+import { Award, ArrowRight, ShieldCheck, ExternalLink } from 'lucide-react';
 
 export function HealthcareSchemes({ schemes = [], lang = 'en' }) {
     const isTe = lang === 'te';

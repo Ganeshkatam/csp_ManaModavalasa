@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Syringe, Calendar, Clock, MapPin, Users, CheckCircle, ShieldCheck, Baby, LayoutGrid, Table, CheckCircle2, Info } from 'lucide-react';
+import { Calendar, Clock, MapPin, Users, CheckCircle, ShieldCheck, Baby, LayoutGrid, Table, CheckCircle2 } from 'lucide-react';
 import { useAppContext } from '../../../app/providers';
 
 export function ImmunizationSchedule({ immunizations = [], loading = false, lang }) {

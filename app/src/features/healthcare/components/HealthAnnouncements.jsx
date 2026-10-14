@@ -1,5 +1,5 @@
 import React from 'react';
-import { HeartPulse, Calendar, CheckCircle, ShieldCheck, AlertCircle, MapPin } from 'lucide-react';
+import { HeartPulse, Calendar, CheckCircle } from 'lucide-react';
 import { useAppContext } from '../../../app/providers';
 
 export function HealthAnnouncements({ announcements = [], loading = false, lang }) {

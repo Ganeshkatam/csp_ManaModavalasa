@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Calendar, ArrowLeft, ShieldCheck, Bell } from 'lucide-react';
+import { Calendar, ArrowLeft, Bell } from 'lucide-react';
 import { useAppContext } from '../../app/providers';
 import { announcementService } from '../../features/announcements/api/announcements';
 import { getLocalized } from '../../i18n';

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Outlet, Link, ScrollRestoration, useLocation } from 'react-router-dom';
+import { Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
 import { Header } from '../components/navigation/Header';
 import { Footer } from '../components/navigation/Footer';
 import { MobileBottomNav } from '../components/navigation/MobileBottomNav';

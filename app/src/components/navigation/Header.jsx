@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { Phone, Menu, X, Landmark, LogOut, ShieldCheck } from 'lucide-react';
+import { Phone, Menu, X, LogOut, ShieldCheck } from 'lucide-react';
 import { useAppContext } from '../../app/providers';
 import { contactService } from '../../features/contacts/api/contacts';
 import { authService } from '../../lib/auth';

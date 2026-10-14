@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { 
-    Landmark, MapPin, ShieldCheck, Users, Building, 
-    Droplets, Zap, BookOpen, Compass, Clock, 
-    CheckCircle2, Navigation, FileText, Phone
+    Landmark, Users, Building, 
+    Droplets, Zap, Compass, 
+    CheckCircle2, Navigation, FileText
 } from 'lucide-react';
 import { useAppContext } from '../../app/providers';
 import { villageService, CENSUS_2011_BASELINE } from '../../features/village';
@@ -11,7 +11,7 @@ import { LoadingState } from '../../components/feedback/LoadingState';
 import { ErrorState } from '../../components/feedback/ErrorState';
 
 export function VillagePage() {
-    const { lang, t } = useAppContext();
+    const { lang, t: _t } = useAppContext();
     const [village, setVillage] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
