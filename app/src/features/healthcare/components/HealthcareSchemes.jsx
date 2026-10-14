@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Award, ArrowRight, ShieldCheck, ExternalLink } from 'lucide-react';
+import { healthcareSchemesData } from '../data/healthcareSchemesData';
 
 export function HealthcareSchemes({ schemes = [], lang = 'en' }) {
     const isTe = lang === 'te';
+    const { header, provenance, labels } = healthcareSchemesData;
 
     if (!schemes || schemes.length === 0) return null;
 
@@ -13,18 +15,15 @@ export function HealthcareSchemes({ schemes = [], lang = 'en' }) {
                 <div>
                     <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--color-slate-900)', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <Award size={20} style={{ color: 'var(--color-blue-600)' }} />
-                        {isTe ? "ప్రభుత్వ ఆరోగ్య సంక్షేమ పథకాలు" : "Government Healthcare Welfare Schemes"}
+                        {isTe ? header.titleTe : header.title}
                     </h2>
                     <p style={{ fontSize: '0.85rem', color: 'var(--color-slate-600)', margin: '0.25rem 0 0' }}>
-                        {isTe 
-                            ? "మోదవలస గ్రామ ప్రజల కోసం డా. ఎన్టీఆర్ వైద్య సేవ (ఆరోగ్యశ్రీ) నగదు రహిత చికిత్స ప్రయోజనాలు మరియు అర్హత వివరాలు."
-                            : "Flagship cashless healthcare programs providing free secondary and tertiary hospital treatment for eligible families."
-                        }
+                        {isTe ? header.subtitleTe : header.subtitle}
                     </p>
                 </div>
                 <div>
                     <Link to="/schemes/category/healthcare" className="btn btn-secondary btn-sm" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem' }}>
-                        {isTe ? "అన్ని ఆరోగ్య పథకాలు చూడండి" : "View Healthcare Schemes"}
+                        {isTe ? header.actionTextTe : header.actionText}
                         <ArrowRight size={14} />
                     </Link>
                 </div>
@@ -32,14 +31,18 @@ export function HealthcareSchemes({ schemes = [], lang = 'en' }) {
 
             <div className="provenance-box">
                 <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
-                    <span><strong>Source:</strong> Dr. NTR Vaidya Seva Trust, Government of Andhra Pradesh (.gov.in)</span>
-                    <span><strong>Verified:</strong> 2026-09-06</span>
+                    <span>
+                        <strong>{isTe ? labels.sourceLabelTe : labels.sourceLabel} </strong>
+                        {isTe ? provenance.sourceTe : provenance.source}
+                    </span>
+                    <span>
+                        <strong>{isTe ? labels.verifiedLabelTe : labels.verifiedLabel} </strong>
+                        {provenance.verifiedOn}
+                    </span>
                 </div>
                 <div style={{ marginTop: '0.35rem', color: 'var(--color-slate-600)' }}>
-                    <strong>Note:</strong> {isTe 
-                        ? "తెల్ల రేషన్ కార్డు (రైస్ కార్డు) ఉన్న ప్రతి కుటుంబం నెట్‌వర్క్ ఆసుపత్రులలో ఆరోగ్య మిత్ర వద్ద ఉచితంగా నగదు రహిత చికిత్స పొందవచ్చు."
-                        : "Eligible BPL Rice Card holders receive 100% cashless hospitalization across all empanelled network hospitals through dedicated Aarogya Mithra desks."
-                    }
+                    <strong>{isTe ? labels.noteLabelTe : labels.noteLabel} </strong>
+                    {isTe ? provenance.noteTe : provenance.note}
                 </div>
             </div>
 
@@ -48,7 +51,8 @@ export function HealthcareSchemes({ schemes = [], lang = 'en' }) {
                     const title = isTe ? (s.name_te || s.name) : s.name;
                     const desc = isTe ? (s.description_te || s.description) : s.description;
                     const elig = isTe ? (s.eligibility_te || s.eligibility) : s.eligibility;
-                    const benefits = s.benefits || '';
+                    const benefits = isTe ? (s.benefits_te || s.benefits) : s.benefits;
+                    const appProcess = isTe ? (s.application_process_te || s.application_process) : s.application_process;
 
                     return (
                         <div 
@@ -67,10 +71,10 @@ export function HealthcareSchemes({ schemes = [], lang = 'en' }) {
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.35rem' }}>
                                         <span className="badge badge-verified">
                                             <ShieldCheck size={11} style={{ marginRight: '3px' }} />
-                                            {isTe ? "రాష్ట్ర స్థాయి అధికారిక పథకం" : "State Government Flagship"}
+                                            {isTe ? labels.stateFlagshipBadgeTe : labels.stateFlagshipBadge}
                                         </span>
                                         <span className="badge badge-civic" style={{ background: 'var(--color-emerald-50)', color: 'var(--color-emerald-800)', border: '1px solid var(--color-emerald-200)' }}>
-                                            {isTe ? "రూ. 25 లక్షల వరకు ఉచితం" : "Coverage up to Rs. 25 Lakhs"}
+                                            {isTe ? labels.coverageBadgeTe : labels.coverageBadge}
                                         </span>
                                     </div>
                                     <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--color-slate-950)', margin: '0 0 0.4rem', lineHeight: '1.25' }}>
@@ -86,7 +90,7 @@ export function HealthcareSchemes({ schemes = [], lang = 'en' }) {
                                         className="btn btn-secondary btn-sm"
                                         style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', fontSize: '0.78rem' }}
                                     >
-                                        <span>{isTe ? "అధికారిక పోర్టల్" : "Official Portal"}</span>
+                                        <span>{isTe ? labels.officialPortalTe : labels.officialPortal}</span>
                                         <ExternalLink size={13} />
                                     </a>
                                 )}
@@ -99,7 +103,7 @@ export function HealthcareSchemes({ schemes = [], lang = 'en' }) {
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem', background: 'var(--color-slate-50)', padding: '1.15rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-slate-200)', marginBottom: '1.25rem' }}>
                                 <div>
                                     <div style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--color-slate-500)', marginBottom: '0.35rem' }}>
-                                        {isTe ? "అర్హత ప్రమాణాలు:" : "Eligibility Criteria:"}
+                                        {isTe ? labels.eligibilityTitleTe : labels.eligibilityTitle}
                                     </div>
                                     <div style={{ fontSize: '0.8125rem', color: 'var(--color-slate-800)', lineHeight: '1.45', fontWeight: 500 }}>
                                         {elig}
@@ -108,18 +112,18 @@ export function HealthcareSchemes({ schemes = [], lang = 'en' }) {
 
                                 <div>
                                     <div style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--color-slate-500)', marginBottom: '0.35rem' }}>
-                                        {isTe ? "ప్రయోజనాలు & కవరేజ్:" : "Core Benefits:"}
+                                        {isTe ? labels.benefitsTitleTe : labels.benefitsTitle}
                                     </div>
                                     <div style={{ fontSize: '0.8125rem', color: 'var(--color-slate-800)', lineHeight: '1.45', fontWeight: 500 }}>
-                                        {benefits || (isTe ? "3,257 శస్త్రచికిత్సలు, పరీక్షలు మరియు మందులు ఉచితం." : "Full coverage for 3,257 secondary and tertiary procedures, tests, and post-discharge medicines.")}
+                                        {benefits || (isTe ? labels.defaultBenefitsTe : labels.defaultBenefits)}
                                     </div>
                                 </div>
                             </div>
 
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', paddingTop: '0.75rem', borderTop: '1px solid var(--color-slate-100)' }}>
                                 <div style={{ fontSize: '0.75rem', color: 'var(--color-slate-500)' }}>
-                                    <strong>{isTe ? "దరఖాస్తు విధానం: " : "Application: "}</strong>
-                                    {isTe ? "నెట్‌వర్క్ ఆసుపత్రిలోని ఆరోగ్య మిత్ర కౌంటర్ వద్ద రేషన్ కార్డు సమర్పించండి." : "Approach Aarogya Mithra counter at any empanelled hospital with Rice Card."}
+                                    <strong>{isTe ? labels.applicationPrefixTe : labels.applicationPrefix} </strong>
+                                    {appProcess || (isTe ? labels.defaultApplicationTe : labels.defaultApplication)}
                                 </div>
 
                                 <Link 
@@ -127,7 +131,7 @@ export function HealthcareSchemes({ schemes = [], lang = 'en' }) {
                                     className="btn btn-primary btn-sm"
                                     style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                                 >
-                                    <span>{isTe ? "మరిన్ని వివరాలు చూడండి" : "View Scheme Details"}</span>
+                                    <span>{isTe ? labels.viewDetailsTe : labels.viewDetails}</span>
                                     <ArrowRight size={14} />
                                 </Link>
                             </div>

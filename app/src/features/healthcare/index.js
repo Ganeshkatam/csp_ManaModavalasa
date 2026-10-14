@@ -9,3 +9,4 @@ export { ImmunizationSchedule } from './components/ImmunizationSchedule';
 export { DiagnosticServices } from './components/DiagnosticServices';
 export { EmergencyGuidance } from './components/EmergencyGuidance';
 export { HealthAnnouncements } from './components/HealthAnnouncements';
+export { healthcareSchemesData } from './data/healthcareSchemesData';
