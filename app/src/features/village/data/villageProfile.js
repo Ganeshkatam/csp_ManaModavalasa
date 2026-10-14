@@ -4,7 +4,7 @@
  * 1. Official Census of India 2011 Primary Census Abstract (PCA)
  * 2. Official Administrative Jurisdictions (ECI & Revenue Records)
  * 3. Verified Local Public Institutions
- * 4. Community Service Project (CSP) Empirical Field Survey
+ * 4. Local Ground Survey
  *
  * Strictly adheres to zero emojis and explicit evidence classification.
  */
@@ -40,8 +40,8 @@ export const CENSUS_2011_BASELINE = {
         citationUrl: 'https://censusindia.gov.in/census.website/data/census-tables',
         dchbUrl: 'https://censusindia.gov.in/census.website/data/district-census-handbook',
         pcaReference: 'Census of India 2011, Primary Census Abstract (PCA), Table A-5, Andhra Pradesh, District Vizianagaram (543), Sub-District Denkada (04839), Village Modavalasa (583218). Directorate of Census Operations, Andhra Pradesh; Office of the Registrar General & Census Commissioner, India.',
-        reconciliationNote: 'Demographic Baseline Notice: The statutory Census of India 2011 Primary Census Abstract (PCA) for Village Code 583218 (Denkada Mandal, Vizianagaram District) records 2,584 persons (1,290 male, 1,294 female) across 624 households. Certain secondary online village directories cite an alternate count of 3,792 persons across 958 households. For academic evaluation, institutional traceability, and consistency across all analytical models, this study uses the statutory Census of India 2011 PCA record as its primary demographic baseline.',
-        reconciliationNoteTe: 'జనాభా గణాంకాల గమనిక: భారత ప్రభుత్వం సెన్సస్ 2011 ప్రైమరీ సెన్సస్ అబ్‌స్ట్రాక్ట్ (PCA, గ్రామ కోడ్ 583218, డెంకాడ మండలం) అధికారిక రికార్డు ప్రకారం మోదవలస జనాభా 2,584 (పురుషులు 1,290, స్త్రీలు 1,294) మరియు 624 గృహాలు. కొన్ని ఇతర ఆన్‌లైన్ డైరెక్టరీలలో 3,792 జనాభా మరియు 958 గృహాలుగా నమోదు చేయబడింది. విద్యా విషయక ఖచ్చితత్వం మరియు ధృవీకరణ కోసం ఈ ప్రాజెక్ట్ అధికారిక సెన్సస్ 2011 PCA రికార్డును ప్రామాణిక మూలంగా పరిగణించింది.'
+        reconciliationNote: 'Demographic Baseline Notice: The statutory Census of India 2011 Primary Census Abstract (PCA) for Village Code 583218 (Denkada Mandal, Vizianagaram District) records 2,584 persons (1,290 male, 1,294 female) across 624 households. Certain secondary online village directories cite an alternate count of 3,792 persons across 958 households. For civic accuracy, institutional traceability, and consistency across all portal modules, the statutory Census of India 2011 PCA record is used as the primary demographic baseline.',
+        reconciliationNoteTe: 'జనాభా గణాంకాల గమనిక: భారత ప్రభుత్వం సెన్సస్ 2011 ప్రైమరీ సెన్సస్ అబ్‌స్ట్రాక్ట్ (PCA, గ్రామ కోడ్ 583218, డెంకాడ మండలం) అధికారిక రికార్డు ప్రకారం మోదవలస జనాభా 2,584 (పురుషులు 1,290, స్త్రీలు 1,294) మరియు 624 గృహాలు. కొన్ని ఇతర ఆన్‌లైన్ డైరెక్టరీలలో 3,792 జనాభా మరియు 958 గృహాలుగా నమోదు చేయబడింది. ఖచ్చితత్వం, విశ్వసనీయత మరియు పౌర సమాచార అవసరాల దృష్ట్యా ఈ పోర్టల్ అధికారిక సెన్సస్ 2011 PCA రికార్డును ప్రామాణిక మూలంగా పరిగణించింది.'
     }
 };
 

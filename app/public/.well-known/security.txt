@@ -1,4 +1,4 @@
-# Security Disclosure Policy for ManaModavalasa (CSP)
+# Security Disclosure Policy for ManaModavalasa
 # RFC 9116 compliant security.txt
 Contact: mailto:katamganesh61@gmail.com
 Expires: 2027-12-31T23:59:59.000Z

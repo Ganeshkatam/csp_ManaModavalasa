@@ -1,14 +1,13 @@
 /* TEAM */
 Author: Ganesh Katam
 Contact: katamganesh61@gmail.com
-Academic Department: Computer Science and Engineering
-Project: Community Service Project (CSP)
-Curricular Framework: 4-Week / 100-Hour Mandatory Community Service Project
+Role: Lead Engineer & Maintainer
+Portal: ManaModavalasa Civic Portal
 Target Habitation: Modavalasa Gram Panchayat, Denkada Mandal, Vizianagaram District
 
 /* THANKS */
-Faculty Mentors and Department of Computer Science and Engineering
 Grama Sachivalayam staff, community health workers (ANM, ASHA), and citizens of Modavalasa
+Faculty advisors and academic mentors
 
 /* SITE */
 Last update: 2026-10-14

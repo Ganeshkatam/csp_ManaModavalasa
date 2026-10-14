@@ -265,7 +265,7 @@ export default function DashboardView({ initialTab = 'ALL' } = {}) {
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement('a');
             link.setAttribute('href', encodedUri);
-            link.setAttribute('download', `csp_survey_microdata_${selectedWard.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.csv`);
+            link.setAttribute('download', `survey_microdata_${selectedWard.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -295,7 +295,7 @@ export default function DashboardView({ initialTab = 'ALL' } = {}) {
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement('a');
             link.setAttribute('href', encodedUri);
-            link.setAttribute('download', `csp_survey_aggregated_indicators_${selectedWard.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.csv`);
+            link.setAttribute('download', `survey_aggregated_indicators_${selectedWard.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -992,7 +992,7 @@ export default function DashboardView({ initialTab = 'ALL' } = {}) {
                                 Audited Field Survey Submissions Ledger
                             </h2>
                             <p className="section-desc">
-                                Verified household records collected during doorstep academic field studies under strict privacy protection (Pseudonymous HH Codes; Zero PII).
+                                Verified household records collected during doorstep field assessments under strict privacy protection (Pseudonymous HH Codes; Zero PII).
                             </p>
                         </div>
                         <div className="ledger-search-box">
@@ -1082,19 +1082,19 @@ export default function DashboardView({ initialTab = 'ALL' } = {}) {
                 </div>
             )}
 
-            {/* Academic Privacy & RLS Protection Card for Public Visitors */}
+            {/* Data Privacy & RLS Protection Card for Public Visitors */}
             {(activeTab === 'ALL' || activeTab === 'LEDGER') && !isAdmin && (
                 <div className="ledger-card" style={{ padding: '2.5rem 1.5rem', textAlign: 'center' }}>
                     <div style={{ maxWidth: '680px', margin: '0 auto' }}>
                         <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--color-blue-50)', color: 'var(--color-blue-600)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
                             <ShieldCheck size={28} />
                         </div>
-                        <span className="badge badge-civic" style={{ marginBottom: '0.5rem' }}>Data Privacy &amp; Academic Ethics</span>
+                        <span className="badge badge-civic" style={{ marginBottom: '0.5rem' }}>Data Privacy &amp; Protection</span>
                         <h2 className="section-title" style={{ fontSize: '1.3rem', marginTop: '0.25rem' }}>
                             Household Privacy &amp; Data Protection Boundary
                         </h2>
                         <p className="section-desc" style={{ fontSize: '0.925rem', lineHeight: 1.6, marginBottom: '1.25rem' }}>
-                            To safeguard village household privacy, individual doorstep survey records, respondent codes, field surveyor identities, and interview timestamps are protected under PostgreSQL Row Level Security (RLS). Public visitors have full real-time access to database-calculated indicator summaries across all 7 study modules above.
+                            To safeguard village household privacy, individual doorstep survey records, respondent codes, field surveyor identities, and interview timestamps are protected under PostgreSQL Row Level Security (RLS). Public visitors have full real-time access to database-calculated indicator summaries across all 7 modules above.
                         </p>
                         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '0.5rem 1rem', background: '#f8fafc', border: '1px solid var(--color-slate-200)', borderRadius: 'var(--radius-md)', fontSize: '0.8125rem', color: 'var(--color-slate-700)' }}>
                             <Lock size={13} style={{ color: 'var(--color-amber-600)' }} />
@@ -1104,7 +1104,7 @@ export default function DashboardView({ initialTab = 'ALL' } = {}) {
                 </div>
             )}
 
-            {/* Academic Problem Traceability Matrix */}
+            {/* Problem Traceability Matrix */}
             <div className="traceability-table-card">
                 <div className="section-head">
                     <h2 className="section-title">

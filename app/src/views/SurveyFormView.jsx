@@ -318,7 +318,7 @@ export default function SurveyFormView() {
                 <header className="survey-form-header" style={{ borderBottom: '1px solid var(--color-slate-200)', paddingBottom: '1.5rem', marginBottom: '2rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
                         <div>
-                            <span className="badge badge-civic">Academic CSP Field Survey</span>
+                            <span className="badge badge-civic">Household Field Survey</span>
                             <h1 style={{ fontSize: '1.65rem', fontWeight: 800, color: 'var(--color-slate-900)', marginTop: '0.35rem', letterSpacing: '-0.02em' }}>
                                 Community Information Needs & Socio-Economic Assessment
                             </h1>
@@ -437,7 +437,7 @@ export default function SurveyFormView() {
                                     onChange={handleInputChange}
                                 />
                                 <span style={{ fontSize: '0.85rem', color: 'var(--color-slate-800)', fontWeight: 500 }}>
-                                    I confirm that informed verbal consent was obtained from the adult respondent (Strict academic privacy; Zero PII collected).
+                                    I confirm that informed verbal consent was obtained from the adult respondent (Strict data privacy; Zero PII collected).
                                 </span>
                             </label>
                         </div>

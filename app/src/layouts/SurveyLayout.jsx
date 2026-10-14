@@ -24,7 +24,7 @@ export function SurveyLayout() {
                 <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 600, color: isOnline ? 'var(--color-blue-800)' : 'var(--color-amber-800)' }}>
                         <ShieldCheck size={14} />
-                        <span>CSP Field Household Survey • 7 Standard Modules (APSCHE Approved)</span>
+                        <span>Village Household Survey • Socioeconomic Field Assessment</span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', fontWeight: 700, color: isOnline ? 'var(--color-emerald-700)' : 'var(--color-amber-800)' }}>
                         {isOnline ? <Wifi size={13} /> : <WifiOff size={13} />}

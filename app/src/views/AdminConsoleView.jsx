@@ -1062,7 +1062,7 @@ export default function AdminConsoleView({ initialTab = 'profile' } = {}) {
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.25rem' }}>
                         <div>
                             <h2 className="section-title" style={{ margin: 0 }}>Habitation Details & Administration</h2>
-                            <p className="section-desc" style={{ margin: '4px 0 0' }}>Geographic and administrative profile of the assigned village for the CSP study.</p>
+                            <p className="section-desc" style={{ margin: '4px 0 0' }}>Geographic and administrative profile of the assigned village.</p>
                         </div>
                         {!showProfileForm && (
                             <button
