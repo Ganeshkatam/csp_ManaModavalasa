@@ -20,13 +20,16 @@ export function clearVillageCache() {
     cachedResolvedVillageId = null;
 }
 
+export const CANONICAL_CENSUS_VILLAGE_CODE = (env.VITE_DEFAULT_CENSUS_CODE || '583218').trim();
+
 /**
  * Resolves the active village identifier.
  * Priority:
  * 1. Validated environment configuration (VITE_DEFAULT_VILLAGE_ID) if provided.
  * 2. In-memory cached village UUID if previously resolved.
- * 3. Explicit database lookup against the villages table.
- * If all sources fail, throws an explicit Error rather than silently falling back to a fixed identifier.
+ * 3. Stable unique identifier lookup via Census Village Code (583218).
+ * 4. Deterministic database lookup against the villages table.
+ * If all sources fail, throws an explicit Error rather than silently falling back to an unverified identifier.
  *
  * @param {Object} [client=supabase] Supabase database client
  * @returns {Promise<string>} Valid UUID of the target village
@@ -42,10 +45,28 @@ export async function resolveVillageId(client = supabase) {
         throw new Error('Village resolution failed: Supabase client is not available or unconfigured.');
     }
 
-    const { data, error } = await client
-        .from('villages')
-        .select('id')
-        .limit(1);
+    let query = client.from('villages').select('id');
+
+    // Prefer resolving by stable unique Census Village Code if query builder supports .eq
+    if (CANONICAL_CENSUS_VILLAGE_CODE && typeof query.eq === 'function') {
+        const { data: censusData, error: censusErr } = await client
+            .from('villages')
+            .select('id')
+            .eq('census_village_code', CANONICAL_CENSUS_VILLAGE_CODE)
+            .limit(1);
+
+        if (!censusErr && censusData && censusData.length > 0 && isValidUuid(censusData[0]?.id)) {
+            cachedResolvedVillageId = censusData[0].id;
+            return cachedResolvedVillageId;
+        }
+    }
+
+    // Fall back to deterministic query ordering if supported
+    if (typeof query.order === 'function') {
+        query = query.order('created_at', { ascending: true });
+    }
+
+    const { data, error } = await query.limit(1);
 
     if (error) {
         throw new Error(`Village resolution failed during database query: ${error.message || 'Database error'}`);
@@ -90,17 +111,26 @@ function createUnconfiguredClient(validation) {
 
     const emptyResult = () => Promise.resolve({ data: null, error: { message: validation.message } });
 
+    function createQueryChain() {
+        const chain = {
+            then: (resolve) => resolve({ data: [], error: { message: validation.message } }),
+            catch: (reject) => Promise.resolve({ data: [], error: { message: validation.message } }).catch(reject),
+            maybeSingle: emptyResult,
+            single: emptyResult
+        };
+        const chainMethods = ['select', 'order', 'limit', 'range', 'eq', 'neq', 'gt', 'gte', 'lt', 'lte', 'like', 'ilike', 'is', 'in', 'or', 'contains', 'match'];
+        for (const method of chainMethods) {
+            chain[method] = () => chain;
+        }
+        return chain;
+    }
+
     return {
         from: () => ({
-            select: () => ({
-                limit: () => ({ then: (resolve) => resolve({ data: [], error: { message: validation.message } }) }),
-                order: () => ({ then: (resolve) => resolve({ data: [], error: { message: validation.message } }) }),
-                eq: () => ({ maybeSingle: emptyResult, then: emptyResult }),
-                then: (resolve) => resolve({ data: [], error: { message: validation.message } })
-            }),
+            select: () => createQueryChain(),
             insert: emptyResult,
-            update: emptyResult,
-            delete: emptyResult
+            update: () => createQueryChain(),
+            delete: () => createQueryChain()
         }),
         rpc: emptyResult,
         auth: {

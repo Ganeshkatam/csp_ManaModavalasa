@@ -124,6 +124,42 @@ test('resolveVillageId resolves via explicit database lookup when client provide
     clearVillageCache();
 });
 
+test('resolveVillageId resolves via census_village_code when client supports eq query', async () => {
+    clearVillageCache();
+    const mockCensusVillageId = '87654321-4321-4321-4321-cba987654321';
+    let queriedCensusCode = null;
+
+    const mockClient = {
+        from: (table) => {
+            assert.strictEqual(table, 'villages');
+            return {
+                select: (cols) => {
+                    assert.strictEqual(cols, 'id');
+                    return {
+                        eq: (col, val) => {
+                            assert.strictEqual(col, 'census_village_code');
+                            queriedCensusCode = val;
+                            return {
+                                limit: async (num) => {
+                                    assert.strictEqual(num, 1);
+                                    return { data: [{ id: mockCensusVillageId }], error: null };
+                                }
+                            };
+                        },
+                        limit: async () => ({ data: [], error: null })
+                    };
+                }
+            };
+        }
+    };
+
+    const resolved = await resolveVillageId(mockClient);
+    assert.strictEqual(resolved, mockCensusVillageId);
+    assert.strictEqual(queriedCensusCode, '583218');
+
+    clearVillageCache();
+});
+
 test('resolveVillageId fails clearly when database lookup returns no village records', async () => {
     clearVillageCache();
     const emptyClient = {

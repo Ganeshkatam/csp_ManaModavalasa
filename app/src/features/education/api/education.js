@@ -1,4 +1,5 @@
 import { supabase } from '../../../lib/supabase';
+import { schemeService } from '../../schemes/api/schemes';
 
 export const educationService = {
     async getEducationInstitutions({ limit } = {}) {
@@ -28,7 +29,12 @@ export const educationService = {
 
         if (error) throw error;
         return data && data.length > 0 ? data[0] : null;
+    },
+
+    async getEducationSchemes() {
+        return schemeService.getSchemesByCategory('Education');
     }
 };
 
 export default educationService;
+

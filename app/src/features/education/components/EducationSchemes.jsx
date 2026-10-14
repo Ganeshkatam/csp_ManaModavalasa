@@ -1,36 +1,44 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Award, ArrowRight } from 'lucide-react';
+import { schemeService, generateSlug } from '../../schemes/api/schemes';
 
-export function EducationSchemes({ lang }) {
+export function EducationSchemes({ schemes: propSchemes, lang = 'en' }) {
     const isTe = lang === 'te';
+    const [fetchedSchemes, setFetchedSchemes] = useState([]);
+    const [loading, setLoading] = useState(!propSchemes || propSchemes.length === 0);
+    const [error, setError] = useState(null);
 
-    const schemes = [
-        {
-            title: "Talliki Vandanam Scheme",
-            titleTe: "తల్లికి వందనం పథకం",
-            subtitle: "Annual financial assistance to eligible mothers ensuring school enrollment & minimum 75% attendance.",
-            subtitleTe: "పాఠశాల నమోదు మరియు కనీసం 75% హాజరు ఉన్న అర్హులైన తల్లులకు వార్షిక ఆర్థిక సహాయం.",
-            slug: "talliki-vandanam-scheme-(formerly-jagananna-amma-vodi)",
-            tag: "School Attendance"
-        },
-        {
-            title: "Post-Matric Fee Reimbursement (Vidya Deevena)",
-            titleTe: "పోస్ట్-మెట్రిక్ ఫీజు రీయింబర్స్‌మెంట్ (విద్యా దీవెన)",
-            subtitle: "Full tuition fee reimbursement and hostel maintenance support for eligible college students.",
-            subtitleTe: "అర్హులైన కళాశాల విద్యార్థులకు పూర్తి ట్యూషన్ ఫీజు రీయింబర్స్‌మెంట్ మరియు వసతి మద్దతు.",
-            slug: "post-matric-fee-reimbursement-(jagananna-vidya-deevena-&-vasathi-deevena)",
-            tag: "Higher Education"
-        },
-        {
-            title: "Jagananna Vidya Kanuka (Student Kits)",
-            titleTe: "జగనన్న విద్యా కానుక (స్టూడెంట్ కిట్స్)",
-            subtitle: "Free educational kits containing uniforms, bilingual textbooks, notebooks, school bag, and shoes.",
-            subtitleTe: "యూనిఫాంలు, ద్విభాషా పాఠ్యపుస్తకాలు, నోట్‌బుక్స్, స్కూల్ బ్యాగ్ మరియు బూట్లతో కూడిన ఉచిత కిట్.",
-            slug: "category/education",
-            tag: "Student Welfare Kit"
+    const schemes = (propSchemes && propSchemes.length > 0) ? propSchemes : fetchedSchemes;
+
+    useEffect(() => {
+        if (propSchemes && propSchemes.length > 0) {
+            return;
         }
-    ];
+
+        let isMounted = true;
+        setLoading(true);
+        setError(null);
+
+        schemeService.getSchemesByCategory('Education')
+            .then(data => {
+                if (isMounted) {
+                    setFetchedSchemes(data || []);
+                    setLoading(false);
+                }
+            })
+            .catch(err => {
+                if (isMounted) {
+                    console.error('Error fetching education schemes:', err);
+                    setError(err.message || 'Failed to load education schemes');
+                    setLoading(false);
+                }
+            });
+
+        return () => {
+            isMounted = false;
+        };
+    }, [propSchemes]);
 
     return (
         <div style={{ marginBottom: '2.5rem' }}>
@@ -55,35 +63,67 @@ export function EducationSchemes({ lang }) {
                 </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
-                {schemes.map((s, idx) => (
-                    <div key={idx} style={{ background: '#ffffff', border: '1px solid var(--color-slate-200)', borderRadius: 'var(--radius-md)', padding: '1.25rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxShadow: 'var(--shadow-xs)' }}>
-                        <div>
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                                <span className="badge badge-civic" style={{ fontSize: '0.7rem' }}>
-                                    {s.tag}
-                                </span>
+            {loading && (
+                <div style={{ padding: '2rem 1rem', textAlign: 'center', color: 'var(--color-slate-500)', fontSize: '0.9rem' }}>
+                    {isTe ? "విద్యా పథకాల వివరాలు లోడ్ అవుతున్నాయి..." : "Loading education schemes..."}
+                </div>
+            )}
+
+            {error && !loading && (
+                <div style={{ padding: '1rem', background: 'var(--color-red-50, #fef2f2)', border: '1px solid var(--color-red-200, #fecaca)', borderRadius: 'var(--radius-md)', color: 'var(--color-red-800, #991b1b)', fontSize: '0.85rem' }}>
+                    {isTe ? "విద్యా పథకాలను లోడ్ చేయడంలో సమస్య ఏర్పడింది." : `Unable to load education schemes: ${error}`}
+                </div>
+            )}
+
+            {!loading && !error && schemes.length === 0 && (
+                <div style={{ padding: '2rem 1rem', textAlign: 'center', color: 'var(--color-slate-500)', fontSize: '0.9rem' }}>
+                    {isTe ? "ప్రస్తుతం ఏ విద్యా పథకాలు ప్రచురించబడలేదు." : "No published education schemes currently available."}
+                </div>
+            )}
+
+            {!loading && !error && schemes.length > 0 && (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
+                    {schemes.map((s) => {
+                        const title = isTe ? (s.name_te || s.name) : s.name;
+                        const subtitle = isTe ? (s.description_te || s.description) : s.description;
+                        const slug = s.slug || generateSlug(s.name) || s.id;
+                        const categoryLabel = isTe ? "విద్యా సంక్షేమం" : (s.category || "Education");
+
+                        return (
+                            <div key={s.id} style={{ background: '#ffffff', border: '1px solid var(--color-slate-200)', borderRadius: 'var(--radius-md)', padding: '1.25rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxShadow: 'var(--shadow-xs)' }}>
+                                <div>
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                                        <span className="badge badge-civic" style={{ fontSize: '0.7rem' }}>
+                                            {categoryLabel}
+                                        </span>
+                                        {s.verified_on && (
+                                            <span style={{ fontSize: '0.72rem', color: 'var(--color-slate-500)' }}>
+                                                {s.verified_on}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <h3 style={{ margin: '0 0 0.4rem', fontSize: '1.05rem', fontWeight: 800, color: 'var(--color-slate-900)' }}>
+                                        {title}
+                                    </h3>
+                                    <p style={{ margin: '0 0 1.25rem', fontSize: '0.82rem', color: 'var(--color-slate-600)', lineHeight: '1.45' }}>
+                                        {subtitle}
+                                    </p>
+                                </div>
+                                <div>
+                                    <Link 
+                                        to={`/schemes/${slug}`}
+                                        className="btn btn-outline btn-block"
+                                        style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px', fontSize: '0.82rem', padding: '0.45rem 0.75rem', textDecoration: 'none' }}
+                                    >
+                                        <span>{isTe ? "పూర్తి వివరాలు చూడండి" : "View Scheme Details"}</span>
+                                        <ArrowRight size={14} />
+                                    </Link>
+                                </div>
                             </div>
-                            <h3 style={{ margin: '0 0 0.4rem', fontSize: '1.05rem', fontWeight: 800, color: 'var(--color-slate-900)' }}>
-                                {isTe ? s.titleTe : s.title}
-                            </h3>
-                            <p style={{ margin: '0 0 1.25rem', fontSize: '0.82rem', color: 'var(--color-slate-600)', lineHeight: '1.45' }}>
-                                {isTe ? s.subtitleTe : s.subtitle}
-                            </p>
-                        </div>
-                        <div>
-                            <Link 
-                                to={`/schemes/${s.slug}`}
-                                className="btn btn-outline btn-block"
-                                style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px', fontSize: '0.82rem', padding: '0.45rem 0.75rem', textDecoration: 'none' }}
-                            >
-                                <span>{isTe ? "పూర్తి వివరాలు చూడండి" : "View Scheme Details"}</span>
-                                <ArrowRight size={14} />
-                            </Link>
-                        </div>
-                    </div>
-                ))}
-            </div>
+                        );
+                    })}
+                </div>
+            )}
         </div>
     );
 }
