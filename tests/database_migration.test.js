@@ -154,6 +154,20 @@ test('Consolidated schema.sql contains all 16 required tables and security contr
         'schema.sql must not contain insecure admin policy with USING (true)'
     );
 
+    // Verify survey rate limit burst protection and replay guards
+    assert.ok(
+        content.includes('max 30 survey submissions per minute per village') &&
+        content.includes("created_at > (now() - interval '5 minutes')"),
+        'schema.sql must contain rate limiting and 5-minute anti-replay protection'
+    );
+
+    // Verify survey direct inserts are restricted to authenticated administrators
+    assert.strictEqual(
+        content.includes('CREATE POLICY "Surveyors insert survey responses"'),
+        false,
+        'schema.sql must not contain open table insert policy on survey_responses'
+    );
+
     // Verify zero emojis rule
     const emojiRegex = /[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/u;
     assert.strictEqual(

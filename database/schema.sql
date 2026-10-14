@@ -835,13 +835,13 @@ CREATE OR REPLACE FUNCTION public.submit_survey(
     p_village_id UUID,
     p_respondent_code TEXT,
     p_interviewer_name TEXT,
-    p_ward_street TEXT DEFAULT NULL,
-    p_locality_ward TEXT DEFAULT NULL,
-    p_started_at TIMESTAMPTZ DEFAULT NULL,
-    p_completed_at TIMESTAMPTZ DEFAULT NULL,
-    p_survey_client_uuid UUID DEFAULT NULL,
-    p_notes TEXT DEFAULT NULL,
-    p_answers JSONB DEFAULT '[]'::jsonb
+    p_ward_street TEXT,
+    p_locality_ward TEXT,
+    p_started_at TIMESTAMPTZ,
+    p_completed_at TIMESTAMPTZ,
+    p_survey_client_uuid UUID,
+    p_notes TEXT,
+    p_answers JSONB
 )
 RETURNS JSONB
 LANGUAGE plpgsql
@@ -849,74 +849,75 @@ SECURITY DEFINER
 SET search_path TO 'public', 'pg_temp'
 AS $$
 DECLARE
-    v_response_id UUID;
-    v_answer JSONB;
-    v_inserted_count INT := 0;
     v_clean_code TEXT;
     v_clean_interviewer TEXT;
     v_clean_ward TEXT;
     v_clean_locality TEXT;
+    v_response_id UUID;
+    v_existing_id UUID;
+    v_answer JSONB;
     v_q_code TEXT;
     v_a_val TEXT;
     v_q_rec RECORD;
     v_d5_val INT;
+    v_inserted_count INT := 0;
     v_recent_same_respondent INT;
     v_recent_village_total INT;
 BEGIN
-    -- 1. Idempotency guard: if a response with this client UUID already exists, return existing
-    IF p_survey_client_uuid IS NOT NULL THEN
-        SELECT id INTO v_response_id
-        FROM public.survey_responses
-        WHERE survey_client_uuid = p_survey_client_uuid;
-
-        IF FOUND THEN
-            RETURN jsonb_build_object(
-                'success', true,
-                'response_id', v_response_id,
-                'already_existed', true,
-                'answers_count', (SELECT COUNT(*) FROM public.survey_answers WHERE response_id = v_response_id)
-            );
-        END IF;
-    END IF;
-
-    -- 2. Input validation on header metadata
-    IF p_village_id IS NULL THEN
-        RAISE EXCEPTION 'village_id is required';
-    END IF;
-
-    IF NOT EXISTS (SELECT 1 FROM public.villages WHERE id = p_village_id) THEN
-        RAISE EXCEPTION 'Invalid village_id: village does not exist';
-    END IF;
-
+    -- 1. Input sanitization and bounds enforcement
     v_clean_code := trim(p_respondent_code);
-    IF v_clean_code IS NULL OR length(v_clean_code) < 2 OR length(v_clean_code) > 50 THEN
-        RAISE EXCEPTION 'respondent_code must be between 2 and 50 characters';
+    v_clean_interviewer := trim(p_interviewer_name);
+    v_clean_ward := trim(p_ward_street);
+    v_clean_locality := trim(p_locality_ward);
+
+    IF v_clean_code IS NULL OR length(v_clean_code) < 3 OR length(v_clean_code) > 50 THEN
+        RAISE EXCEPTION 'respondent_code must be between 3 and 50 characters';
     END IF;
 
-    v_clean_interviewer := trim(p_interviewer_name);
     IF v_clean_interviewer IS NULL OR length(v_clean_interviewer) < 2 OR length(v_clean_interviewer) > 100 THEN
         RAISE EXCEPTION 'interviewer_name must be between 2 and 100 characters';
     END IF;
 
-    v_clean_ward := NULLIF(trim(p_ward_street), '');
-    v_clean_locality := NULLIF(trim(p_locality_ward), '');
-
-    IF p_notes IS NOT NULL AND length(p_notes) > 2000 THEN
-        RAISE EXCEPTION 'notes exceeds maximum permitted length of 2000 characters';
+    IF v_clean_ward IS NULL OR length(v_clean_ward) < 2 OR length(v_clean_ward) > 200 THEN
+        RAISE EXCEPTION 'ward_street must be between 2 and 200 characters';
     END IF;
 
-    -- Temporal validation
-    IF p_started_at IS NOT NULL AND p_started_at > (now() + interval '10 minutes') THEN
-        RAISE EXCEPTION 'started_at cannot be in the future';
+    IF v_clean_locality IS NULL OR length(v_clean_locality) < 2 OR length(v_clean_locality) > 100 THEN
+        RAISE EXCEPTION 'locality_ward must be between 2 and 100 characters';
     END IF;
-    IF p_completed_at IS NOT NULL AND p_completed_at > (now() + interval '10 minutes') THEN
-        RAISE EXCEPTION 'completed_at cannot be in the future';
+
+    -- Validate village exists
+    IF NOT EXISTS (SELECT 1 FROM public.villages WHERE id = p_village_id) THEN
+        RAISE EXCEPTION 'Specified village does not exist';
     END IF;
+
+    -- Validate started_at and completed_at
     IF p_started_at IS NOT NULL AND p_completed_at IS NOT NULL AND p_completed_at < p_started_at THEN
         RAISE EXCEPTION 'completed_at cannot precede started_at';
     END IF;
 
-    -- Anti-replay guard: prevent duplicate respondent_code submissions within 5 minutes
+    -- 2. Idempotency Check: if survey_client_uuid already exists, return existing record
+    IF p_survey_client_uuid IS NOT NULL THEN
+        SELECT id INTO v_existing_id
+        FROM public.survey_responses
+        WHERE survey_client_uuid = p_survey_client_uuid;
+
+        IF v_existing_id IS NOT NULL THEN
+            SELECT count(*) INTO v_inserted_count
+            FROM public.survey_answers
+            WHERE response_id = v_existing_id;
+
+            RETURN jsonb_build_object(
+                'success', true,
+                'response_id', v_existing_id,
+                'already_existed', true,
+                'answers_count', v_inserted_count
+            );
+        END IF;
+    END IF;
+
+    -- 3. Anti-replay and rate limiting guards
+    -- Anti-replay: prevent duplicate respondent_code submissions within 5 minutes
     SELECT COUNT(*) INTO v_recent_same_respondent
     FROM public.survey_responses
     WHERE lower(respondent_code) = lower(v_clean_code)
@@ -937,7 +938,7 @@ BEGIN
         RAISE EXCEPTION 'Survey submission rate limit exceeded for this village. Please retry shortly.';
     END IF;
 
-    -- 3. Answers payload validation & cardinality enforcement
+    -- 4. Validate answers array
     IF p_answers IS NULL OR jsonb_typeof(p_answers) <> 'array' THEN
         RAISE EXCEPTION 'answers must be a valid JSON array';
     END IF;
@@ -989,7 +990,7 @@ BEGIN
         END IF;
     END LOOP;
 
-    -- 4. Atomic insertion of survey response header
+    -- 5. Atomic insertion of survey response header
     INSERT INTO public.survey_responses (
         village_id,
         respondent_code,
@@ -1015,7 +1016,7 @@ BEGIN
     )
     RETURNING id INTO v_response_id;
 
-    -- 5. Atomic insertion of validated answers
+    -- 6. Atomic insertion of validated answers with accurate insertion count
     FOR v_answer IN SELECT * FROM jsonb_array_elements(p_answers)
     LOOP
         INSERT INTO public.survey_answers (

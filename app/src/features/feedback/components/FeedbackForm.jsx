@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ShieldCheck } from 'lucide-react';
 import { Button } from '../../../components/ui/Button';
 import { Select } from '../../../components/ui/Select';
 import { feedbackService } from '../api/feedback';
@@ -216,6 +217,13 @@ export function FeedbackForm({ villageId, t }) {
                         placeholder="Please specify the business or facility name, updated phone number, or details..."
                         required
                     />
+                </div>
+
+                <div style={{ margin: '1rem 0', padding: '0.85rem 1rem', background: 'var(--color-bg-subtle, #f8fafc)', borderRadius: '6px', border: '1px solid var(--color-border)', fontSize: '0.8125rem', color: 'var(--color-text-muted)', lineHeight: '1.5' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 600, color: 'var(--color-text-main)', marginBottom: '0.25rem' }}>
+                        <ShieldCheck size={15} style={{ color: 'var(--color-primary)' }} /> Privacy &amp; Data Protection Notice (DPDP Act, 2023)
+                    </div>
+                    Providing your name and phone number is optional. Contact details are used strictly by authorized village administrators to verify submitted records. Public status tracking exposes zero personal identifiers. Feedback records are retained during administrative verification and may be deleted upon citizen request.
                 </div>
 
                 <Button 

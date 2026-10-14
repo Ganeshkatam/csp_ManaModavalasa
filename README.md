@@ -308,7 +308,7 @@ npm --prefix app install
 # 2. Run Local Development Server (http://localhost:5173)
 npm run dev
 
-# 3. Execute Complete Test Suite (81 Tests across 2 runners)
+# 3. Execute Complete Test Suite (88 Tests across 2 runners)
 npm test
 
 # 4. Run Linter (Oxlint)
@@ -325,13 +325,14 @@ npm run preview
 
 ## 9. Verification & Automated Test Suite
 
-The project includes an automated test suite containing **81 tests** executed across two independent test runners with zero external mock libraries:
+The project includes an automated test suite containing **88 tests** executed across two independent test runners with zero external mock libraries:
 
 ```text
 Test Suite Summary:
 ────────────────────────────────────────────────────────────
-Runner 1: Application Unit Tests (app/src/**/*.test.js)
+Runner 1: Application Unit Tests (app/src/**/*.test.js via app/scripts/run-tests.js)
   - feedbackService: validation, offline queue, rate limits, RLS handling  (12 tests)
+  - schemesCatalog: slug generation, fallback matching, UUID/slug lookups  (7 tests)
   - searchPortal: query normalization, empty query guards, abort signals   (3 tests)
   - surveyUpload: RPC delegation, idempotency, failure propagation         (3 tests)
   - authService: password whitespace preservation, email normalization     (3 tests)
@@ -342,7 +343,7 @@ Runner 1: Application Unit Tests (app/src/**/*.test.js)
   - surveyValidation: metadata attribution, bounds checking, consent rules (5 tests)
   - inputSanitizers: phone, email, URL protocols, text trimming            (5 tests)
   - villageProfile: postal PIN, APEPDCL grid, jurisdictions, zero emojis   (4 tests)
-  - Subtotal: 67 passed, 0 failed.
+  - Subtotal: 74 passed, 0 failed.
 
 Runner 2: Root Integration & Invariant Tests (tests/*.test.js)
   - auditPayloadRedaction: recursive secret stripping, phone masking       (5 tests)
@@ -351,7 +352,7 @@ Runner 2: Root Integration & Invariant Tests (tests/*.test.js)
   - surveyCatalog: question catalog matches canonical database schema      (1 test)
   - Subtotal: 14 passed, 0 failed.
 ────────────────────────────────────────────────────────────
-Total Suite: 81 passed, 0 failed, 0 skipped (Duration: < 900ms)
+Total Suite: 88 passed, 0 failed, 0 skipped (Duration: ~1.1s)
 ```
 
 ---
