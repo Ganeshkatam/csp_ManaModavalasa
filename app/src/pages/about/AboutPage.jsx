@@ -6,11 +6,9 @@ import {
     ShieldCheck, 
     FileText, 
     CheckCircle2, 
-    MapPin, 
     Users, 
     Building, 
-    AlertCircle, 
-    ExternalLink 
+    AlertCircle 
 } from 'lucide-react';
 import { useAppContext } from '../../app/providers';
 

@@ -1,7 +1,7 @@
-# CSP VillageMitra — Incident Response & Severity Plan
+# ManaModavalasa — Incident Response & Severity Plan
 
 ## 1. Purpose
-This document defines incident classification, response protocols, escalation paths, and post-mortem procedures for operational, security, or data availability incidents impacting CSP VillageMitra.
+This document defines incident classification, response protocols, escalation paths, and post-mortem procedures for operational, security, or data availability incidents impacting ManaModavalasa.
 
 ---
 

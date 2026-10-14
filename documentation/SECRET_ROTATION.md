@@ -1,7 +1,7 @@
-# CSP VillageMitra — Secret & Credential Lifecycle Runbook
+# ManaModavalasa — Secret & Credential Lifecycle Runbook
 
 ## 1. Overview
-This document specifies the lifecycle management, exposure containment, and zero-downtime rotation protocol for all cryptographic secrets and credentials utilized by CSP VillageMitra.
+This document specifies the lifecycle management, exposure containment, and zero-downtime rotation protocol for all cryptographic secrets and credentials utilized by ManaModavalasa.
 
 ---
 

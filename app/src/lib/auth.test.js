@@ -18,20 +18,20 @@ test('authService.signIn preserves passwords with leading, trailing, and interna
     try {
         // 1. Password with leading spaces
         const leadingPassword = '   leadingSpacePass123!';
-        await authService.signIn('admin@villagemitra.org', leadingPassword);
+        await authService.signIn('admin@manamodavalasa.org', leadingPassword);
         assert.strictEqual(capturedArgs[0].password, leadingPassword);
-        assert.strictEqual(capturedArgs[0].email, 'admin@villagemitra.org');
+        assert.strictEqual(capturedArgs[0].email, 'admin@manamodavalasa.org');
 
         // 2. Password with trailing spaces
         const trailingPassword = 'trailingSpacePass123!   ';
-        await authService.signIn('admin@villagemitra.org', trailingPassword);
+        await authService.signIn('admin@manamodavalasa.org', trailingPassword);
         assert.strictEqual(capturedArgs[1].password, trailingPassword);
 
         // 3. Password with both leading and trailing spaces
         const bothEndsPassword = '   pass with spaces around and inside   ';
-        await authService.signIn('  admin@villagemitra.org  ', bothEndsPassword);
+        await authService.signIn('  admin@manamodavalasa.org  ', bothEndsPassword);
         assert.strictEqual(capturedArgs[2].password, bothEndsPassword);
-        assert.strictEqual(capturedArgs[2].email, 'admin@villagemitra.org');
+        assert.strictEqual(capturedArgs[2].email, 'admin@manamodavalasa.org');
     } finally {
         supabase.auth.signInWithPassword = originalSignIn;
     }
@@ -72,17 +72,17 @@ test('authService.signIn trims and validates the email address', async () => {
 
 test('authService.signIn rejects empty or missing passwords', async () => {
     await assert.rejects(
-        () => authService.signIn('admin@villagemitra.org', ''),
+        () => authService.signIn('admin@manamodavalasa.org', ''),
         /Password is required/
     );
 
     await assert.rejects(
-        () => authService.signIn('admin@villagemitra.org', null),
+        () => authService.signIn('admin@manamodavalasa.org', null),
         /Password is required/
     );
 
     await assert.rejects(
-        () => authService.signIn('admin@villagemitra.org', undefined),
+        () => authService.signIn('admin@manamodavalasa.org', undefined),
         /Password is required/
     );
 });

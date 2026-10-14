@@ -1,7 +1,7 @@
-# CSP VillageMitra — Disaster Recovery & Backup Runbook
+# ManaModavalasa — Disaster Recovery & Backup Runbook
 
 ## 1. Overview & Recovery Objectives
-This document establishes the official backup, recovery, and data preservation runbook for the CSP VillageMitra database and application infrastructure.
+This document establishes the official backup, recovery, and data preservation runbook for the ManaModavalasa database and application infrastructure.
 
 - **Recovery Point Objective (RPO)**: 24 Hours (Maximum allowable data loss window in disaster scenario).
 - **Recovery Time Objective (RTO)**: 2 Hours (Maximum target time to restore a operational service instance).
