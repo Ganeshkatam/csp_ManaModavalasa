@@ -155,18 +155,24 @@ export function HomePage() {
                         </div>
 
                         <h1 className="hero-title">
-                            {village?.name ? `${t?.welcomeTo || 'Welcome to'} ${getLocalized(village, 'name', lang)}` : 'ManaModavalasa'}
-                            <span className="hero-title-suffix"> {t?.portalTitleEn || 'Portal'}</span>
+                            {isTe ? (
+                                <>
+                                    <span className="hero-title-suffix">{getLocalized(village, 'name', lang) || 'మోదవలస'}</span> గ్రామానికి స్వాగతం
+                                </>
+                            ) : (
+                                <>
+                                    Welcome to <span className="hero-title-suffix">{getLocalized(village, 'name', lang) || 'Modavalasa'}</span>
+                                </>
+                            )}
                         </h1>
-
-                        <div className="hero-regional-badge">
-                            <span>{t?.portalTitleRegional || 'మన మోదవలస'}</span>
-                        </div>
 
                         <p className="hero-subtitle">
                             {village?.gram_panchayat
-                                ? `${village.gram_panchayat} Gram Panchayat • ${village.mandal} Mandal • ${village.district} District • ${village.state || 'Andhra Pradesh'}`
-                                : (t?.portalSubtitle || 'Village Information Gateway • Academic CSP Initiative')
+                                ? (isTe 
+                                    ? `${village.gram_panchayat_te || village.gram_panchayat} గ్రామ పంచాయతీ • ${village.mandal_te || village.mandal} మండలం • ${village.district_te || village.district} జిల్లా • ${village.state_te || 'ఆంధ్రప్రదేశ్'}`
+                                    : `${village.gram_panchayat} Gram Panchayat • ${village.mandal} Mandal • ${village.district} District • ${village.state || 'Andhra Pradesh'}`
+                                  )
+                                : (t?.portalSubtitle || 'Our village. Our community. • Academic CSP Initiative')
                             }
                         </p>
 
