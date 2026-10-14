@@ -13,7 +13,7 @@ test('Database migrations are well-formed and chronologically ordered', () => {
     assert.ok(fs.existsSync(migrationsDir), 'supabase/migrations directory must exist');
 
     const files = fs.readdirSync(migrationsDir).filter(f => f.endsWith('.sql'));
-    assert.strictEqual(files.length, 18, 'Expected exactly 18 migration files matching schema_migrations');
+    assert.strictEqual(files.length, 19, 'Expected exactly 19 migration files matching schema_migrations');
 
     const expectedSequence = [
         '20260901000000_initial_schema.sql',
@@ -28,9 +28,10 @@ test('Database migrations are well-formed and chronologically ordered', () => {
         '20260928173138_atomic_survey_ingestion_and_idempotency.sql',
         '20260928173256_add_citizen_feedback_abuse_guards.sql',
         '20260928180000_server_enforced_anti_abuse_and_survey_hardening.sql',
-        '20260930010000_create_server_authoritative_search_portal.sql',
-        '20260930020000_harden_security_definer_and_cohort_privacy.sql',
-        '20261001000000_fix_create_admin_user_pgcrypto_resolution.sql',
+        '20260929200918_create_server_authoritative_search_portal.sql',
+        '20260929201012_enable_rls_on_search_aliases.sql',
+        '20260929201636_harden_security_definer_and_cohort_privacy.sql',
+        '20261001091004_fix_create_admin_user_pgcrypto_resolution.sql',
         '20261010000000_create_administrative_audit_trail.sql',
         '20261014010000_restrict_survey_inserts_and_enforce_rate_limits.sql',
         '20261014020000_harden_admin_password_length.sql'
@@ -58,7 +59,7 @@ test('Database migrations are well-formed and chronologically ordered', () => {
     }
 });
 
-test('Consolidated schema.sql contains all 16 required tables and security controls', () => {
+test('Consolidated schema.sql contains all 17 required tables and security controls', () => {
     const schemaPath = path.join(rootDir, 'database', 'schema.sql');
     assert.ok(fs.existsSync(schemaPath), 'database/schema.sql must exist');
 

@@ -93,7 +93,7 @@ The platform is designed as a modular, responsive Single-Page Application (SPA) 
                                  │
                                  ▼
                  [ Supabase PostgreSQL 15+ Backend ]
-                   ├── Row Level Security (RLS) on all 16 Tables
+                   ├── Row Level Security (RLS) on all 17 Tables
                    ├── Stored Procedures (submit_survey, search_portal)
                    ├── Recursive Payload Redaction (sanitize_audit_payload)
                    ├── Append-Only Administrative Audit Trail (audit_logs)
@@ -239,10 +239,10 @@ csp_ManaModavalasa/
 │       └── views/                                # Core SPA views (Portal, Survey, Dashboard, Admin)
 │
 ├── database/
-│   └── schema.sql                                # Consolidated PostgreSQL schema (16 tables, RLS)
+│   └── schema.sql                                # Consolidated PostgreSQL schema (17 tables, RLS)
 │
 ├── supabase/
-│   └── migrations/                               # 16 sequential, reproducible database migrations
+│   └── migrations/                               # 19 sequential, reproducible database migrations
 │       ├── 20260901000000_initial_schema.sql
 │       ├── ...
 │       └── 20261010000000_create_administrative_audit_trail.sql
