@@ -499,8 +499,8 @@ BEGIN
     RAISE EXCEPTION 'A user with this email already exists.';
   END IF;
 
-  IF length(temp_password) < 6 THEN
-    RAISE EXCEPTION 'Temporary password must be at least 6 characters.';
+  IF length(temp_password) < 12 THEN
+    RAISE EXCEPTION 'Temporary password must be at least 12 characters.';
   END IF;
 
   INSERT INTO auth.users (

@@ -13,7 +13,7 @@ test('Database migrations are well-formed and chronologically ordered', () => {
     assert.ok(fs.existsSync(migrationsDir), 'supabase/migrations directory must exist');
 
     const files = fs.readdirSync(migrationsDir).filter(f => f.endsWith('.sql'));
-    assert.strictEqual(files.length, 17, 'Expected exactly 17 migration files matching schema_migrations');
+    assert.strictEqual(files.length, 18, 'Expected exactly 18 migration files matching schema_migrations');
 
     const expectedSequence = [
         '20260901000000_initial_schema.sql',
@@ -32,7 +32,8 @@ test('Database migrations are well-formed and chronologically ordered', () => {
         '20260930020000_harden_security_definer_and_cohort_privacy.sql',
         '20261001000000_fix_create_admin_user_pgcrypto_resolution.sql',
         '20261010000000_create_administrative_audit_trail.sql',
-        '20261014010000_restrict_survey_inserts_and_enforce_rate_limits.sql'
+        '20261014010000_restrict_survey_inserts_and_enforce_rate_limits.sql',
+        '20261014020000_harden_admin_password_length.sql'
     ].map(f => f.endsWith('.sql') ? f : f + '.sql');
 
     assert.deepStrictEqual(files, expectedSequence, 'Migration sequence must match expected chronological baseline');

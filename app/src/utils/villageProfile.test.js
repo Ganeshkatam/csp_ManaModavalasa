@@ -26,8 +26,9 @@ test('villageProfile administrative jurisdictions are properly set', () => {
 });
 
 test('villageProfile reflects verified Census 2011 PCA citation and reconciliation provenance', () => {
-    assert.strictEqual(CENSUS_2011_BASELINE.provenance.citationUrl, 'https://censusindia.gov.in/');
+    assert.strictEqual(CENSUS_2011_BASELINE.provenance.citationUrl, 'https://censusindia.gov.in/census.website/data/census-tables');
     assert.ok(CENSUS_2011_BASELINE.provenance.pcaReference.includes('Office of the Registrar General & Census Commissioner, India'));
+    assert.ok(CENSUS_2011_BASELINE.provenance.pcaReference.includes('Table A-5'));
     assert.ok(CENSUS_2011_BASELINE.provenance.pcaReference.includes('583218'));
     assert.ok(CENSUS_2011_BASELINE.provenance.reconciliationNote.includes('2,584 persons'));
     assert.ok(CENSUS_2011_BASELINE.provenance.reconciliationNote.includes('3,792 persons'));
