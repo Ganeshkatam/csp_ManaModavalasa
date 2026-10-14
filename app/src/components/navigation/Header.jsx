@@ -97,8 +97,8 @@ export function Header() {
                             <Landmark size={20} />
                         </div>
                         <div className="nav-brand-text">
-                            <span className="nav-brand-title">{t?.portalTitleEn || 'VILLAGE MITRA'}</span>
-                            <span className="nav-brand-sub">{t?.portalSubtitle || 'Village Information Gateway'}</span>
+                            <span className="nav-brand-title">{t?.portalTitleEn || 'ManaModavalasa'}</span>
+                            <span className="nav-brand-sub">{t?.portalSubtitle || 'మన మోదవలస • Our village. Our community.'}</span>
                         </div>
                     </Link>
 

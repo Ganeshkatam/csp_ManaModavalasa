@@ -1,5 +1,5 @@
 /* ==============================================================================
-   Village Mitra — Global Styles & Civic Design System
+   ManaModavalasa — Global Styles & Civic Design System
    Architecture: Pure CSS3 + Accessible Civic Modernism
    Zero Emojis | High Contrast | Responsive Mobile-First | 48px Touch Targets
    ============================================================================== */
@@ -3609,7 +3609,7 @@ textarea.form-control {
 }
 
 /* ==============================================================================
-   Village Mitra — Analytics Dashboard & Survey Visualization
+   ManaModavalasa — Analytics Dashboard & Survey Visualization
    ============================================================================== */
 
 /* Filter & Controls Toolbar */
@@ -4048,7 +4048,7 @@ textarea.form-control {
 }
 
 /* ==============================================================================
-   Village Mitra — Survey Form & Field Interview Styles
+   ManaModavalasa — Survey Form & Field Interview Styles
    ============================================================================== */
 .survey-container {
     max-width: 860px;
@@ -4097,7 +4097,7 @@ textarea.form-control {
 }
 
 /* ==============================================================================
-   Village Mitra — Admin Console & Entity Management Styles
+   ManaModavalasa — Admin Console & Entity Management Styles
    ============================================================================== */
 .admin-tabs-bar {
     display: flex;

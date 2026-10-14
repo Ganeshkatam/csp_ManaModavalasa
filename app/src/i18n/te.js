@@ -2,10 +2,10 @@ export default {
     govtState: "కమ్యూనిటీ సర్వీస్ ప్రాజెక్ట్ (CSP) | బి.టెక్ సిఎస్ఇ",
     govtDept: "కంప్యూటర్ సైన్స్ అండ్ ఇంజనీరింగ్ విభాగం",
     projectBadge: "కమ్యూనిటీ సర్వీస్ ప్రాజెక్ట్ (CSP) • కంప్యూటర్ సైన్స్ అండ్ ఇంజనీరింగ్ విభాగం",
-    portalTitleRegional: "గ్రామ మిత్ర",
-    portalTitleEn: "VILLAGE MITRA",
-    portalSubtitle: "గ్రామ సమాచార వేదిక • అకడమిక్ సీఎస్పీ ప్రాజెక్ట్",
-    digitalIndiaTag: "గ్రామ మిత్ర",
+    portalTitleRegional: "మన మోదవలస",
+    portalTitleEn: "ManaModavalasa",
+    portalSubtitle: "మన గ్రామం. మన సమూహం. • అకడమిక్ సీఎస్పీ ప్రాజెక్ట్",
+    digitalIndiaTag: "మన మోదవలస",
     digitalIndiaSub: "అకడమిక్ ప్రాజెక్ట్",
 
     // Nav

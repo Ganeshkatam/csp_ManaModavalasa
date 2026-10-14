@@ -1,5 +1,5 @@
 # Community Service Project (CSP) — Final Report
-# Village Information Portal: A Verified Digital Platform for [Assigned Village Name]
+# ManaModavalasa (మన మోదవలస): A Verified Digital Village Information Platform for Modavalasa Gram Panchayat
 
 **Submitted in partial fulfillment of the requirements for the Degree of Bachelor of Technology in Computer Science and Engineering**
 

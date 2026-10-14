@@ -1,0 +1,20 @@
+{
+  "name": "ManaModavalasa — మన మోదవలస",
+  "short_name": "ManaModavalasa",
+  "description": "ManaModavalasa (మన మోదవలస) — Our village. Our community. Verified rural public information portal for welfare schemes, emergency contacts, healthcare schedules, and civic facilities in Modavalasa.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#0f766e",
+  "orientation": "portrait-primary",
+  "lang": "en-IN",
+  "categories": ["government", "utilities", "education", "health"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -26,10 +26,10 @@ export function Footer() {
                             </div>
                             <div>
                                 <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff', margin: 0 }}>
-                                    {t?.portalTitleEn || 'VILLAGE MITRA'}
+                                    {t?.portalTitleEn || 'ManaModavalasa'}
                                 </h3>
                                 <div style={{ fontSize: '0.85rem', color: 'var(--color-slate-400)' }}>
-                                    {t?.portalTitleRegional || 'గ్రామ మిత్ర'}
+                                    {t?.portalTitleRegional || 'మన మోదవలస'}
                                 </div>
                             </div>
                         </div>

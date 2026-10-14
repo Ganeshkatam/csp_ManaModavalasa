@@ -1,0 +1,18 @@
+/* TEAM */
+Author: Ganesh Katam
+Contact: katamganesh61@gmail.com
+Academic Department: Computer Science and Engineering
+Project: Community Service Project (CSP)
+Curricular Framework: 4-Week / 100-Hour Mandatory Community Service Project
+Target Habitation: Modavalasa Gram Panchayat, Denkada Mandal, Vizianagaram District
+
+/* THANKS */
+Faculty Mentors and Department of Computer Science and Engineering
+Grama Sachivalayam staff, community health workers (ANM, ASHA), and citizens of Modavalasa
+
+/* SITE */
+Last update: 2026-10-14
+Standards: HTML5, CSS3, ES2024, GIGW Accessibility Standards
+Software Architecture: React 19, Vite 8, Pure CSS, Supabase PostgreSQL 15+
+Production Domain: https://villagemitra.vercel.app
+Source Repository: https://github.com/Ganeshkatam/csp_villagemitra

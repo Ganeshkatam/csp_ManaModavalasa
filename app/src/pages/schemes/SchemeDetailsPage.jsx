@@ -16,12 +16,19 @@ import { sanitizeUrl } from '../../utils/validation';
 
 export function SchemeDetailsPage() {
     const { schemeSlug } = useParams();
-    const { lang, t } = useAppContext();
+    const { lang } = useAppContext();
     const [scheme, setScheme] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const resetViewportToTop = () => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+    };
+
     useEffect(() => {
+        resetViewportToTop();
         setLoading(true);
         setError(null);
         schemeService.getSchemeBySlugOrId(schemeSlug)
@@ -36,9 +43,15 @@ export function SchemeDetailsPage() {
             });
     }, [schemeSlug]);
 
+    useEffect(() => {
+        if (!loading && scheme) {
+            resetViewportToTop();
+        }
+    }, [loading, scheme]);
+
     if (loading) {
         return (
-            <div className="container" style={{ padding: '3.5rem 0' }}>
+            <div className="container" style={{ padding: '3.5rem 0', minHeight: '80vh' }}>
                 <LoadingState count={1} message="Retrieving authoritative civic scheme record..." />
             </div>
         );

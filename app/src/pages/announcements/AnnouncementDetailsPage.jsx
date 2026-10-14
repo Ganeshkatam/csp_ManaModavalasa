@@ -17,6 +17,7 @@ export function AnnouncementDetailsPage() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
         setLoading(true);
         setError(null);
         announcementService.getAnnouncementById(announcementId)
@@ -29,6 +30,12 @@ export function AnnouncementDetailsPage() {
                 setLoading(false);
             });
     }, [announcementId]);
+
+    useEffect(() => {
+        if (!loading && announcement) {
+            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        }
+    }, [loading, announcement]);
 
     if (loading) {
         return (

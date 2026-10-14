@@ -839,7 +839,7 @@ export default function AdminConsoleView({ initialTab = 'profile' } = {}) {
                 <div className="survey-card" style={{ maxWidth: '440px', margin: '0 auto' }}>
                     <div className="section-header" style={{ textAlign: 'center' }}>
                         <Lock size={36} style={{ color: 'var(--color-gov-navy)', margin: '0 auto 0.5rem' }} />
-                        <h1 className="brand-title" style={{ fontSize: '1.5rem' }}>Student / Admin Console</h1>
+                        <h1 className="brand-title" style={{ fontSize: '1.5rem' }}>ManaModavalasa — Admin Console</h1>
                         <p className="section-desc">
                             Sign in with your verified administrator credentials to manage village information.
                         </p>
@@ -963,7 +963,7 @@ export default function AdminConsoleView({ initialTab = 'profile' } = {}) {
         <main className="container" style={{ paddingBottom: '3rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', margin: '1.5rem 0' }}>
                 <div>
-                    <h1 className="brand-title" style={{ fontSize: '1.75rem' }}>Village Information Management Console</h1>
+                    <h1 className="brand-title" style={{ fontSize: '1.75rem' }}>ManaModavalasa Management Console</h1>
                     <p className="section-desc">Logged in as: <strong>{user.email}</strong></p>
                 </div>
                 <button type="button" className="btn btn-secondary" onClick={handleLogout}>

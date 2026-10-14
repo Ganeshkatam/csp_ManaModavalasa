@@ -2,10 +2,10 @@ export default {
     govtState: "COMMUNITY SERVICE PROJECT (CSP) | B.TECH CSE",
     govtDept: "Department of Computer Science & Engineering",
     projectBadge: "Community Service Project (CSP) • Department of Computer Science & Engineering",
-    portalTitleRegional: "గ్రామ మిత్ర",
-    portalTitleEn: "VILLAGE MITRA",
-    portalSubtitle: "Village Information Gateway • Academic CSP Initiative",
-    digitalIndiaTag: "Village Mitra",
+    portalTitleRegional: "మన మోదవలస",
+    portalTitleEn: "ManaModavalasa",
+    portalSubtitle: "Our village. Our community. • Academic CSP Initiative",
+    digitalIndiaTag: "ManaModavalasa",
     digitalIndiaSub: "Academic CSP Project",
 
     // Nav

@@ -2,13 +2,107 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Village Mitra — Digital Village Information Portal (CSP)</title>
-    <meta name="description" content="Village Mitra — Digital Village Information Portal developed under the Community Service Project (CSP) to assist citizens with verified welfare scheme guidelines, emergency contacts, and public facilities." />
+    <title>ManaModavalasa | మన మోదవలస</title>
+    
+    <!-- Primary SEO Metadata -->
+    <meta name="description" content="ManaModavalasa (మన మోదవలస) is a verified digital village information portal engineered for Modavalasa Gram Panchayat (Denkada Mandal, Vizianagaram District) under the Community Service Project (CSP). Access verified welfare schemes, 24x7 emergency contacts, PHC doctor timings, school directories, and civic facilities." />
+    <meta name="keywords" content="ManaModavalasa, మన మోదవలస, Modavalasa, Denkada, Vizianagaram, Community Service Project, CSP, Andhra Pradesh, rural digital portal, welfare schemes, emergency contacts, PHC timings, Modavalasa Grama Sachivalayam, 531162, civic services" />
+    <meta name="author" content="Ganesh Katam" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://villagemitra.vercel.app/" />
+    <meta name="theme-color" content="#0f766e" />
+    <meta name="application-name" content="ManaModavalasa" />
+
+    <!-- Multilingual Alternate Language References -->
+    <link rel="alternate" hreflang="en" href="https://villagemitra.vercel.app/?lang=en" />
+    <link rel="alternate" hreflang="te" href="https://villagemitra.vercel.app/?lang=te" />
+    <link rel="alternate" hreflang="x-default" href="https://villagemitra.vercel.app/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="ManaModavalasa | మన మోదవలస" />
+    <meta property="og:url" content="https://villagemitra.vercel.app/" />
+    <meta property="og:title" content="ManaModavalasa | మన మోదవలస" />
+    <meta property="og:description" content="ManaModavalasa (మన మోదవలస) — Our village. Our community. Verified rural public information portal for welfare schemes, emergency contacts, healthcare schedules, and civic facilities in Modavalasa Gram Panchayat." />
+    <meta property="og:image" content="https://villagemitra.vercel.app/images/rural_village_illustration.jpg" />
+    <meta property="og:image:alt" content="ManaModavalasa Rural Digital Information Portal for Modavalasa" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:locale:alternate" content="te_IN" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://villagemitra.vercel.app/" />
+    <meta name="twitter:title" content="ManaModavalasa | మన మోదవలస" />
+    <meta name="twitter:description" content="ManaModavalasa (మన మోదవలస) — Our village. Our community. Verified rural public information portal for welfare schemes, emergency contacts, healthcare schedules, and civic facilities in Modavalasa Gram Panchayat." />
+    <meta name="twitter:image" content="https://villagemitra.vercel.app/images/rural_village_illustration.jpg" />
+
+    <!-- PWA & Favicon Assets -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Typography & Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Telugu:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Schema.org JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://villagemitra.vercel.app/#website",
+          "url": "https://villagemitra.vercel.app/",
+          "name": "ManaModavalasa",
+          "alternateName": "మన మోదవలస",
+          "description": "Digital Village Information Portal for Modavalasa Gram Panchayat",
+          "inLanguage": ["en-IN", "te-IN"],
+          "publisher": {
+            "@type": "EducationalOrganization",
+            "name": "Community Service Project (CSP) - Computer Science and Engineering"
+          }
+        },
+        {
+          "@type": "CivicStructure",
+          "@id": "https://villagemitra.vercel.app/#habitation",
+          "name": "Modavalasa Gram Panchayat",
+          "alternateName": "మోదవలస గ్రామ పంచాయతీ",
+          "description": "Rural habitation in Denkada Mandal, Vizianagaram District, Andhra Pradesh, studied under the Community Service Project.",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Modavalasa",
+            "addressRegion": "Andhra Pradesh",
+            "postalCode": "531162",
+            "addressCountry": "IN"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 18.0667,
+            "longitude": 83.4500
+          }
+        },
+        {
+          "@type": "GovernmentService",
+          "@id": "https://villagemitra.vercel.app/#service",
+          "name": "Village Information and Public Directory Service",
+          "serviceType": "Public Civic Information and Scheme Guidance",
+          "provider": {
+            "@type": "AdministrativeArea",
+            "name": "Modavalasa Grama Sachivalayam"
+          },
+          "areaServed": {
+            "@type": "AdministrativeArea",
+            "name": "Modavalasa"
+          }
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>

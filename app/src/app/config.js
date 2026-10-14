@@ -1,6 +1,7 @@
 export const APP_CONFIG = {
-    appName: "Village Mitra",
-    appNameRegional: "గ్రామ మిత్ర",
+    appName: "ManaModavalasa",
+    appNameRegional: "మన మోదవలస",
+    appTagline: "Our village. Our community.",
     defaultVillageId: null,
     storageKeys: {
         language: "csp_app_lang",

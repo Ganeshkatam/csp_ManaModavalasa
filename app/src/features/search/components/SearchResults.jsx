@@ -72,7 +72,7 @@ export function SearchResults({ results = [], state = 'idle', error = null, quer
                 <div className="search-guide-head">
                     <HelpCircle size={20} className="search-guide-icon" aria-hidden="true" />
                     <h3 className="search-guide-title">
-                        {lang === 'te' ? 'గ్రామ మిత్ర సమగ్ర శోధన గైడ్' : 'Modavalasa Civic Information Directory'}
+                        {lang === 'te' ? 'మన మోదవలస సమగ్ర శోధన గైడ్' : 'ManaModavalasa Civic Information Directory'}
                     </h3>
                 </div>
                 <p className="search-guide-desc">

@@ -330,12 +330,12 @@ export default function DashboardView({ initialTab = 'ALL' } = {}) {
             {/* Header with Title and Global Action Controls */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1.25rem', marginBottom: '1.75rem' }}>
                 <div>
-                    <span className="badge badge-civic">Village Survey Analytics</span>
+                    <span className="badge badge-civic">ManaModavalasa Survey Analytics</span>
                     <h1 className="hero-title" style={{ fontSize: '1.85rem', marginTop: '0.4rem', letterSpacing: '-0.02em' }}>
-                        Village Survey Analytics Dashboard
+                        ManaModavalasa Survey Analytics Dashboard
                     </h1>
                     <p className="section-desc" style={{ maxWidth: '850px' }}>
-                        Live survey results, mobile access rates, and community feedback collected directly from village households.
+                        Live survey results, mobile access rates, and community feedback collected directly from Modavalasa village households.
                     </p>
                 </div>
                 <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap' }}>

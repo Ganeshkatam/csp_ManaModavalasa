@@ -61,7 +61,7 @@ export function SearchPage() {
                     </div>
 
                     <h1 className="page-title">
-                        {lang === 'te' ? 'గ్రామ మిత్ర సమగ్ర శోధన' : 'Civic Information Search'}
+                        {lang === 'te' ? 'మన మోదవలస సమగ్ర శోధన' : 'ManaModavalasa Civic Search'}
                     </h1>
                     <p className="page-subtitle">
                         {lang === 'te'

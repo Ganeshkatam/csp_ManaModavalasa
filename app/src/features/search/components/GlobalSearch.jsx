@@ -39,7 +39,7 @@ export function GlobalSearch({
         <form role="search" onSubmit={handleSubmit} className="global-search-form">
             <div className="global-search-input-wrap">
                 <label htmlFor="global-search-input" className="sr-only">
-                    {lang === 'te' ? 'గ్రామ మిత్ర సమగ్ర శోధన' : 'Search Village Mitra portal'}
+                    {lang === 'te' ? 'మన మోదవలస సమగ్ర శోధన' : 'Search ManaModavalasa portal'}
                 </label>
 
                 <div className="global-search-icon" aria-hidden="true">

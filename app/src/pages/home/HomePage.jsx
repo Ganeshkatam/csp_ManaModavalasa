@@ -155,12 +155,12 @@ export function HomePage() {
                         </div>
 
                         <h1 className="hero-title">
-                            {village?.name ? `${t?.welcomeTo || 'Welcome to'} ${getLocalized(village, 'name', lang)}` : 'Village Mitra'}
+                            {village?.name ? `${t?.welcomeTo || 'Welcome to'} ${getLocalized(village, 'name', lang)}` : 'ManaModavalasa'}
                             <span className="hero-title-suffix"> {t?.portalTitleEn || 'Portal'}</span>
                         </h1>
 
                         <div className="hero-regional-badge">
-                            <span>{t?.portalTitleRegional || 'గ్రామ మిత్ర'}</span>
+                            <span>{t?.portalTitleRegional || 'మన మోదవలస'}</span>
                         </div>
 
                         <p className="hero-subtitle">
