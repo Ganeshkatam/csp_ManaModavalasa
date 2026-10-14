@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Lock, LogOut, Plus, Trash2, ShieldCheck, UserPlus, Key, Edit, Eye, EyeOff, ChevronDown, ChevronUp, Check, Upload, X, Image as ImageIcon } from 'lucide-react';
+import { Lock, LogOut, Plus, Trash2, ShieldCheck, UserPlus, Key, Edit, Eye, EyeOff, ChevronDown, ChevronUp, Check, Upload, X, Image as ImageIcon, Phone, RefreshCw, Search, MessageSquare } from 'lucide-react';
 import { supabase, DEFAULT_VILLAGE_ID, resolveVillageId } from '../lib/supabase';
 import CustomDatePicker from '../components/CustomDatePicker';
 
@@ -41,6 +41,16 @@ const STATUS_OPTIONS = [
     { value: "published", label: "Published" },
     { value: "draft", label: "Draft (Hidden)" }
 ];
+
+const FEEDBACK_STATUS_STYLES = {
+    'Resolved': { background: '#dcfce7', color: '#166534', border: '1px solid #bbf7d0' },
+    'In Progress': { background: '#f3e8ff', color: '#7e22ce', border: '1px solid #e9d5ff' },
+    'Reviewed': { background: '#e0f2fe', color: '#0369a1', border: '1px solid #bae6fd' },
+    'Dismissed': { background: '#f3f4f6', color: '#4b5563', border: '1px solid #e5e7eb' },
+    'Pending': { background: '#fef3c7', color: '#92400e', border: '1px solid #fde68a' }
+};
+
+const getFeedbackStatusStyle = (status) => FEEDBACK_STATUS_STYLES[status] || FEEDBACK_STATUS_STYLES['Pending'];
 
 // Custom Modern Dropdown UI Component
 function ModernSelect({ value, onChange, options, placeholder = "Select an option" }) {
@@ -291,6 +301,9 @@ export default function AdminConsoleView({ initialTab = 'profile' } = {}) {
     const [institutions, setInstitutions] = useState([]);
     const [businesses, setBusinesses] = useState([]);
     const [feedback, setFeedback] = useState([]);
+    const [feedbackStatusFilter, setFeedbackStatusFilter] = useState('All');
+    const [feedbackSearch, setFeedbackSearch] = useState('');
+    const [updatingFeedbackId, setUpdatingFeedbackId] = useState(null);
 
     // Form States for CRUD
     const [announcementForm, setAnnouncementForm] = useState(defaultAnnouncement);
@@ -624,6 +637,49 @@ export default function AdminConsoleView({ initialTab = 'profile' } = {}) {
         const { data } = await supabase.from('businesses').select('*').order('created_at', { ascending: false });
         if (data) setBusinesses(data);
     }
+    async function reloadFeedback() {
+        const { data, error } = await supabase.from('citizen_feedback').select('*').order('created_at', { ascending: false });
+        if (error) notify('Failed to reload feedback: ' + error.message, 'danger');
+        else if (data) setFeedback(data);
+    }
+
+    const handleUpdateFeedbackStatus = async (id, newStatus) => {
+        try {
+            setUpdatingFeedbackId(id);
+            const { error } = await supabase
+                .from('citizen_feedback')
+                .update({ status: newStatus })
+                .eq('id', id);
+            if (error) {
+                notify('Failed to update status: ' + error.message, 'danger');
+            } else {
+                notify(`Feedback status updated to "${newStatus}".`);
+                await reloadFeedback();
+            }
+        } catch (err) {
+            notify('Error updating status: ' + (err.message || 'Unknown error'), 'danger');
+        } finally {
+            setUpdatingFeedbackId(null);
+        }
+    };
+
+    const handleDeleteFeedback = async (id) => {
+        if (!confirm('Are you sure you want to permanently delete this citizen feedback inquiry? This action cannot be undone.')) return;
+        try {
+            const { error } = await supabase
+                .from('citizen_feedback')
+                .delete()
+                .eq('id', id);
+            if (error) {
+                notify('Failed to delete feedback: ' + error.message, 'danger');
+            } else {
+                notify('Citizen feedback record deleted.');
+                await reloadFeedback();
+            }
+        } catch (err) {
+            notify('Error deleting feedback: ' + (err.message || 'Unknown error'), 'danger');
+        }
+    };
 
     // Toggle Status Helper
     const handleToggleStatus = async (table, item, reloadFn) => {
@@ -2611,32 +2667,310 @@ export default function AdminConsoleView({ initialTab = 'profile' } = {}) {
             )}
 
             {/* Tab: Citizen Feedback */}
-            {activeTab === 'feedback' && (
-                <div className="survey-card">
-                    <h2 className="section-title">Citizen Feedback & Correction Inquiries</h2>
-                    <p className="section-desc">Public submissions requesting information updates or reporting errors.</p>
-                    <div style={{ marginTop: '1rem' }}>
-                        {feedback.length > 0 ? (
-                            feedback.map(f => (
-                                <div key={f.id} className="info-card" style={{ marginBottom: '1rem' }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <span className="badge badge-civic">{f.feedback_type}</span>
-                                        <span className="badge" style={{ background: f.status === 'Resolved' ? '#dcfce7' : '#fef3c7', color: f.status === 'Resolved' ? '#15803d' : '#b45309' }}>
-                                            {f.status}
-                                        </span>
-                                    </div>
-                                    <p style={{ margin: '0.5rem 0', fontWeight: 600 }}>{f.message}</p>
-                                    <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
-                                        Submitted by: {f.name} ({f.phone || 'No phone'}) | Date: {new Date(f.created_at).toLocaleDateString()}
-                                    </div>
+            {activeTab === 'feedback' && (() => {
+                const pendingCount = feedback.filter(f => (f.status || 'Pending') === 'Pending').length;
+                const reviewedCount = feedback.filter(f => f.status === 'Reviewed').length;
+                const inProgressCount = feedback.filter(f => f.status === 'In Progress').length;
+                const resolvedCount = feedback.filter(f => f.status === 'Resolved').length;
+                const dismissedCount = feedback.filter(f => f.status === 'Dismissed').length;
+
+                const feedbackFiltered = feedback.filter(f => {
+                    const status = f.status || 'Pending';
+                    if (feedbackStatusFilter !== 'All' && status !== feedbackStatusFilter) return false;
+                    if (feedbackSearch.trim()) {
+                        const q = feedbackSearch.toLowerCase().trim();
+                        return (
+                            (f.name || '').toLowerCase().includes(q) ||
+                            (f.phone || '').toLowerCase().includes(q) ||
+                            (f.reference_id || '').toLowerCase().includes(q) ||
+                            (f.feedback_type || '').toLowerCase().includes(q) ||
+                            (f.message || '').toLowerCase().includes(q)
+                        );
+                    }
+                    return true;
+                });
+
+                return (
+                    <div className="survey-card">
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.25rem' }}>
+                            <div>
+                                <h2 className="section-title" style={{ margin: 0 }}>Citizen Feedback & Correction Inquiries</h2>
+                                <p className="section-desc" style={{ margin: '4px 0 0' }}>
+                                    Public submissions requesting information updates, reporting inaccuracies, or submitting community grievances.
+                                </p>
+                            </div>
+                            <button
+                                type="button"
+                                className="btn btn-secondary btn-sm"
+                                onClick={reloadFeedback}
+                                style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                                title="Reload submissions from database"
+                            >
+                                <RefreshCw size={14} /> Refresh Submissions
+                            </button>
+                        </div>
+
+                        {/* Filter and Search Bar */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.5rem', background: 'var(--color-bg-subtle, #f8fafc)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--color-border)' }}>
+                            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                                <div style={{ position: 'relative', flex: '1 1 280px' }}>
+                                    <Search size={16} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)', pointerEvents: 'none' }} />
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        style={{ paddingLeft: '34px', paddingRight: feedbackSearch ? '30px' : '10px', fontSize: '0.875rem' }}
+                                        placeholder="Search by citizen name, phone, Reference ID, category, or keyword..."
+                                        value={feedbackSearch}
+                                        onChange={(e) => setFeedbackSearch(e.target.value)}
+                                    />
+                                    {feedbackSearch && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setFeedbackSearch('')}
+                                            style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-text-muted)' }}
+                                            title="Clear search"
+                                        >
+                                            <X size={14} />
+                                        </button>
+                                    )}
                                 </div>
-                            ))
-                        ) : (
-                            <p style={{ color: 'var(--color-text-muted)' }}>No feedback submissions recorded yet.</p>
-                        )}
+                            </div>
+
+                            {/* Status Filter Pills */}
+                            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                                <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-text-muted)', marginRight: '0.25rem' }}>Status Filter:</span>
+                                {[
+                                    { key: 'All', label: `All (${feedback.length})` },
+                                    { key: 'Pending', label: `Pending (${pendingCount})` },
+                                    { key: 'Reviewed', label: `Reviewed (${reviewedCount})` },
+                                    { key: 'In Progress', label: `In Progress (${inProgressCount})` },
+                                    { key: 'Resolved', label: `Resolved (${resolvedCount})` },
+                                    { key: 'Dismissed', label: `Dismissed (${dismissedCount})` }
+                                ].map(filter => (
+                                    <button
+                                        key={filter.key}
+                                        type="button"
+                                        className={`filter-pill ${feedbackStatusFilter === filter.key ? 'active' : ''}`}
+                                        onClick={() => setFeedbackStatusFilter(filter.key)}
+                                        style={{ fontSize: '0.8125rem', padding: '0.3rem 0.75rem' }}
+                                    >
+                                        {filter.label}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Feedback Items List */}
+                        <div>
+                            {feedbackFiltered.length > 0 ? (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                    {feedbackFiltered.map(f => {
+                                        const status = f.status || 'Pending';
+                                        const isUpdating = updatingFeedbackId === f.id;
+                                        const statusStyle = getFeedbackStatusStyle(status);
+
+                                        return (
+                                            <div
+                                                key={f.id}
+                                                className="info-card"
+                                                style={{
+                                                    padding: '1.25rem',
+                                                    border: '1px solid var(--color-border)',
+                                                    borderRadius: '8px',
+                                                    background: 'var(--color-surface, #ffffff)',
+                                                    boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+                                                }}
+                                            >
+                                                {/* Header Row */}
+                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                                                        <span className="badge badge-civic">{f.feedback_type || 'General'}</span>
+                                                        {f.reference_id && (
+                                                            <span
+                                                                style={{
+                                                                    fontFamily: 'monospace',
+                                                                    fontSize: '0.75rem',
+                                                                    fontWeight: 700,
+                                                                    padding: '0.2rem 0.5rem',
+                                                                    background: 'var(--color-bg-subtle, #f1f5f9)',
+                                                                    color: 'var(--color-text, #334155)',
+                                                                    borderRadius: '4px',
+                                                                    border: '1px solid var(--color-border)'
+                                                                }}
+                                                                title="Public Tracking Reference ID"
+                                                            >
+                                                                Ref: {f.reference_id}
+                                                            </span>
+                                                        )}
+                                                        <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
+                                                            {new Date(f.created_at).toLocaleString('en-IN', {
+                                                                year: 'numeric',
+                                                                month: 'short',
+                                                                day: 'numeric',
+                                                                hour: '2-digit',
+                                                                minute: '2-digit'
+                                                            })}
+                                                        </span>
+                                                    </div>
+
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                        <span className="badge" style={statusStyle}>
+                                                            {status}
+                                                        </span>
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-secondary btn-sm"
+                                                            onClick={() => handleDeleteFeedback(f.id)}
+                                                            title="Delete submission record"
+                                                            disabled={isUpdating}
+                                                            style={{
+                                                                padding: '0.25rem 0.5rem',
+                                                                color: 'var(--color-danger, #ef4444)',
+                                                                display: 'inline-flex',
+                                                                alignItems: 'center'
+                                                            }}
+                                                        >
+                                                            <Trash2 size={14} />
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                {/* Message Content */}
+                                                <div
+                                                    style={{
+                                                        margin: '0.75rem 0',
+                                                        padding: '0.875rem 1rem',
+                                                        background: 'var(--color-bg-subtle, #f8fafc)',
+                                                        borderRadius: '6px',
+                                                        borderLeft: `4px solid ${statusStyle.color}`,
+                                                        fontSize: '0.9375rem',
+                                                        lineHeight: 1.6,
+                                                        color: 'var(--color-text-main, #0f172a)',
+                                                        whiteSpace: 'pre-wrap',
+                                                        wordBreak: 'break-word'
+                                                    }}
+                                                >
+                                                    {f.message}
+                                                </div>
+
+                                                {/* Submitter Details & Action Buttons */}
+                                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem', marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px dashed var(--color-border)' }}>
+                                                    <div style={{ fontSize: '0.8125rem', color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                                                        <span>
+                                                            Submitted by: <strong style={{ color: 'var(--color-text-main)' }}>{f.name || 'Anonymous Resident'}</strong>
+                                                        </span>
+                                                        {f.phone ? (
+                                                            <a
+                                                                href={`tel:${f.phone}`}
+                                                                className="btn btn-secondary btn-sm"
+                                                                style={{
+                                                                    display: 'inline-flex',
+                                                                    alignItems: 'center',
+                                                                    gap: '0.35rem',
+                                                                    padding: '0.2rem 0.55rem',
+                                                                    fontSize: '0.8125rem',
+                                                                    textDecoration: 'none',
+                                                                    color: 'var(--color-primary)'
+                                                                }}
+                                                                title="Direct dial submitter"
+                                                            >
+                                                                <Phone size={13} /> {f.phone}
+                                                            </a>
+                                                        ) : (
+                                                            <span style={{ fontStyle: 'italic', color: 'var(--color-text-muted)' }}>No phone provided</span>
+                                                        )}
+                                                    </div>
+
+                                                    {/* Action Buttons to Update Status */}
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
+                                                        <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-muted)', marginRight: '0.25rem' }}>
+                                                            Set Status:
+                                                        </span>
+                                                        {status !== 'Pending' && (
+                                                            <button
+                                                                type="button"
+                                                                className="btn btn-secondary btn-sm"
+                                                                onClick={() => handleUpdateFeedbackStatus(f.id, 'Pending')}
+                                                                disabled={isUpdating}
+                                                                style={{ padding: '0.2rem 0.55rem', fontSize: '0.75rem' }}
+                                                            >
+                                                                Pending
+                                                            </button>
+                                                        )}
+                                                        {status !== 'Reviewed' && (
+                                                            <button
+                                                                type="button"
+                                                                className="btn btn-secondary btn-sm"
+                                                                onClick={() => handleUpdateFeedbackStatus(f.id, 'Reviewed')}
+                                                                disabled={isUpdating}
+                                                                style={{ padding: '0.2rem 0.55rem', fontSize: '0.75rem', color: '#0369a1', borderColor: '#bae6fd' }}
+                                                            >
+                                                                Mark Reviewed
+                                                            </button>
+                                                        )}
+                                                        {status !== 'In Progress' && (
+                                                            <button
+                                                                type="button"
+                                                                className="btn btn-secondary btn-sm"
+                                                                onClick={() => handleUpdateFeedbackStatus(f.id, 'In Progress')}
+                                                                disabled={isUpdating}
+                                                                style={{ padding: '0.2rem 0.55rem', fontSize: '0.75rem', color: '#7e22ce', borderColor: '#e9d5ff' }}
+                                                            >
+                                                                In Progress
+                                                            </button>
+                                                        )}
+                                                        {status !== 'Resolved' && (
+                                                            <button
+                                                                type="button"
+                                                                className="btn btn-sm"
+                                                                onClick={() => handleUpdateFeedbackStatus(f.id, 'Resolved')}
+                                                                disabled={isUpdating}
+                                                                style={{ padding: '0.2rem 0.55rem', fontSize: '0.75rem', background: '#15803d', color: '#ffffff', border: '1px solid #15803d' }}
+                                                            >
+                                                                Resolve
+                                                            </button>
+                                                        )}
+                                                        {status !== 'Dismissed' && (
+                                                            <button
+                                                                type="button"
+                                                                className="btn btn-secondary btn-sm"
+                                                                onClick={() => handleUpdateFeedbackStatus(f.id, 'Dismissed')}
+                                                                disabled={isUpdating}
+                                                                style={{ padding: '0.2rem 0.55rem', fontSize: '0.75rem', color: '#4b5563' }}
+                                                            >
+                                                                Dismiss
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            ) : feedback.length === 0 ? (
+                                <div style={{ textAlign: 'center', padding: '3rem 1rem', background: 'var(--color-bg-subtle, #f8fafc)', borderRadius: '8px', border: '1px solid var(--color-border)' }}>
+                                    <MessageSquare size={36} style={{ color: 'var(--color-text-muted)', marginBottom: '0.75rem' }} />
+                                    <h3 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-text-main)', margin: '0 0 0.25rem' }}>No Submissions Recorded</h3>
+                                    <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', margin: 0 }}>No citizen feedback or correction inquiries have been submitted yet.</p>
+                                </div>
+                            ) : (
+                                <div style={{ textAlign: 'center', padding: '2.5rem 1rem', background: 'var(--color-bg-subtle, #f8fafc)', borderRadius: '8px', border: '1px solid var(--color-border)' }}>
+                                    <Search size={32} style={{ color: 'var(--color-text-muted)', marginBottom: '0.5rem' }} />
+                                    <h3 style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--color-text-main)', margin: '0 0 0.25rem' }}>No Matching Feedback</h3>
+                                    <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', margin: '0 0 1rem' }}>No inquiries match your current status filter and search query.</p>
+                                    <button
+                                        type="button"
+                                        className="btn btn-secondary btn-sm"
+                                        onClick={() => { setFeedbackStatusFilter('All'); setFeedbackSearch(''); }}
+                                    >
+                                        Reset Filters
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     </div>
-                </div>
-            )}
+                );
+            })()}
 
             {/* Tab: Admin Accounts & Password Management */}
             {activeTab === 'accounts' && (
