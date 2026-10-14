@@ -25,6 +25,14 @@ test('villageProfile administrative jurisdictions are properly set', () => {
     assert.strictEqual(ADMINISTRATIVE_JURISDICTION.state, 'Andhra Pradesh');
 });
 
+test('villageProfile reflects verified Census 2011 PCA citation and reconciliation provenance', () => {
+    assert.strictEqual(CENSUS_2011_BASELINE.provenance.citationUrl, 'https://censusindia.gov.in/');
+    assert.ok(CENSUS_2011_BASELINE.provenance.pcaReference.includes('Office of the Registrar General & Census Commissioner, India'));
+    assert.ok(CENSUS_2011_BASELINE.provenance.pcaReference.includes('583218'));
+    assert.ok(CENSUS_2011_BASELINE.provenance.reconciliationNote.includes('2,584 persons'));
+    assert.ok(CENSUS_2011_BASELINE.provenance.reconciliationNote.includes('3,792 persons'));
+});
+
 test('villageProfile data adheres strictly to zero-emoji rule', () => {
     const emojiRegex = /[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/u;
     const jsonString = JSON.stringify({
@@ -34,3 +42,4 @@ test('villageProfile data adheres strictly to zero-emoji rule', () => {
     });
     assert.strictEqual(emojiRegex.test(jsonString), false, 'Village profile data contains emojis');
 });
+

@@ -37,7 +37,9 @@ export const CENSUS_2011_BASELINE = {
         sourceTe: 'భారత ప్రభుత్వం సెన్సస్ 2011 (గ్రామ కోడ్: 583218) మరియు ఇండియా పోస్ట్ డైరెక్టరీ',
         evidenceClass: 'Census of India 2011 & India Post',
         evidenceClassTe: 'సెన్సస్ 2011 & ఇండియా పోస్ట్ అధికారికం',
-        reconciliationNote: 'Authoritative baseline reflects Census of India 2011 Primary Census Abstract (PCA) for Village Code 583218 (2,584 persons, 624 households). Third-party aggregator listings citing 3,792 persons and 958 households conflate contiguous revenue hamlets, combine Mandal-level sub-blocks, or quote unverified secondary projections.'
+        citationUrl: 'https://censusindia.gov.in/',
+        pcaReference: 'Office of the Registrar General & Census Commissioner, India (ORGI), Ministry of Home Affairs, Government of India. Primary Census Abstract (PCA), Census of India 2011, Series 29 (Andhra Pradesh), District Vizianagaram (543), Sub-District Denkada (04839), Village Modavalasa (583218).',
+        reconciliationNote: 'Authoritative baseline reflects the official Census of India 2011 Primary Census Abstract (PCA) for Village Code 583218 (Office of the Registrar General & Census Commissioner, India), recording 2,584 persons across 624 households. While certain secondary web directories and commercial aggregators list an alternate figure of 3,792 persons and 958 households, such counts typically arise from aggregating adjacent un-surveyed hamlets, combining Mandal-level revenue blocks, or citing non-statutory local projections. For academic defense and data provenance, this study relies strictly on the official ORGI Census 2011 PCA baseline.'
     }
 };
 
@@ -160,6 +162,6 @@ export const CIVIC_INFRASTRUCTURE = {
 };
 
 export const PROVENANCE_DISCLAIMER = {
-    en: 'Source: Census of India 2011 (Village Code: 583218) and verified local civic records. Census statistics are reported for the Census village unit; community-survey findings are identified separately. Last verified: September 2026.',
-    te: 'సమాచార మూలం: భారత ప్రభుత్వం సెన్సస్ 2011 (గ్రామ కోడ్: 583218) మరియు ధృవీకరించిన స్థానిక పాలనా రికార్డులు. సెన్సస్ గణాంకాలు అధికారిక గ్రామ యూనిట్ పరంగా ఉన్నాయి; కమ్యూనిటీ సర్వే మరియు క్షేత్ర పరిశీలనలు విడిగా గుర్తించబడ్డాయి. చివరి ధృవీకరణ: సెప్టెంబర్ 2026.'
+    en: 'Source: Office of the Registrar General & Census Commissioner, India (Census 2011 Primary Census Abstract, Village Code: 583218, https://censusindia.gov.in/) and verified local civic records. Census statistics are reported for the statutory Census village unit; community-survey findings are identified separately. Last verified: September 2026.',
+    te: 'సమాచార మూలం: రిజిస్ట్రార్ జనరల్ & సెన్సస్ కమిషనర్ కార్యాలయం, భారత ప్రభుత్వం (సెన్సస్ 2011 ప్రైమరీ సెన్సస్ అబ్‌స్ట్రాక్ట్, గ్రామ కోడ్: 583218, https://censusindia.gov.in/) మరియు ధృవీకరించిన స్థానిక పాలనా రికార్డులు. సెన్సస్ గణాంకాలు అధికారిక గ్రామ యూనిట్ పరంగా ఉన్నాయి; కమ్యూనిటీ సర్వే పరిశీలనలు విడిగా గుర్తించబడ్డాయి. చివరి ధృవీకరణ: సెప్టెంబర్ 2026.'
 };

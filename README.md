@@ -48,7 +48,7 @@ All baseline civic metrics for the portal are provenance-gated, combining offici
 | **Local Administrative Secretariat** | Modavalasa Grama Sachivalayam (Ward 2 Complex) | Government of Andhra Pradesh |
 | **Primary Economic Livelihoods** | Paddy Agriculture, Handloom Weaving (BC Colony), Dairy Cooperatives, Rural Services | CSP Field Survey & Community Interviews |
 
-> **Demographic Baseline Reconciliation**: The authoritative baseline for this study is strictly derived from the official Census of India 2011 Primary Census Abstract (PCA) for Village Code `583218` (Denkada Mandal, Vizianagaram District), recording 2,584 persons across 624 households. Third-party web aggregators citing 3,792 persons and 958 households conflate contiguous revenue hamlets, combine Mandal-level sub-blocks, or quote unverified secondary projections. All academic metrics herein adhere to the official Census PCA baseline.
+> **Demographic Baseline Reconciliation**: The authoritative baseline for this study is strictly derived from the official Census of India 2011 Primary Census Abstract (PCA) for Village Code `583218` (Denkada Mandal, Vizianagaram District; Office of the Registrar General & Census Commissioner, India; [censusindia.gov.in](https://censusindia.gov.in/)), recording 2,584 persons across 624 households. While certain secondary web directories and commercial aggregators list an alternate figure of 3,792 persons and 958 households, such counts typically arise from aggregating adjacent un-surveyed hamlets, combining Mandal-level revenue blocks, or citing non-statutory local projections. All academic metrics herein adhere strictly to the official Census PCA baseline.
 
 ---
 
@@ -342,8 +342,8 @@ Runner 1: Application Unit Tests (app/src/**/*.test.js via app/scripts/run-tests
   - telephoneFormatter: mobile formatting, landline formatting, tel links  (5 tests)
   - surveyValidation: metadata attribution, bounds checking, consent rules (5 tests)
   - inputSanitizers: phone, email, URL protocols, text trimming            (5 tests)
-  - villageProfile: postal PIN, APEPDCL grid, jurisdictions, zero emojis   (4 tests)
-  - Subtotal: 74 passed, 0 failed.
+  - villageProfile: postal PIN, APEPDCL grid, jurisdictions, PCA provenance, zero emojis (5 tests)
+  - Subtotal: 75 passed, 0 failed.
 
 Runner 2: Root Integration & Invariant Tests (tests/*.test.js)
   - auditPayloadRedaction: recursive secret stripping, phone masking       (5 tests)
@@ -352,7 +352,7 @@ Runner 2: Root Integration & Invariant Tests (tests/*.test.js)
   - surveyCatalog: question catalog matches canonical database schema      (1 test)
   - Subtotal: 14 passed, 0 failed.
 ────────────────────────────────────────────────────────────
-Total Suite: 88 passed, 0 failed, 0 skipped (Duration: ~1.1s)
+Total Suite: 89 passed, 0 failed, 0 skipped (Duration: ~1.1s)
 ```
 
 ---

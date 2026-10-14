@@ -406,8 +406,8 @@ export default function AdminConsoleView({ initialTab = 'profile' } = {}) {
         e.preventDefault();
         setChangePasswordError(null);
 
-        if (newPassword.length < 6) {
-            setChangePasswordError('New password must be at least 6 characters long.');
+        if (newPassword.length < 12) {
+            setChangePasswordError('New password must be at least 12 characters long.');
             return;
         }
 
@@ -445,8 +445,8 @@ export default function AdminConsoleView({ initialTab = 'profile' } = {}) {
         setCreateAccountLoading(true);
         setCreateAccountError(null);
         try {
-            if (newAccountTempPassword.length < 6) {
-                throw new Error('Temporary password must be at least 6 characters.');
+            if (newAccountTempPassword.length < 12) {
+                throw new Error('Temporary password must be at least 12 characters.');
             }
             const cleanEmail = newAccountEmail.trim();
             const { error } = await supabase.rpc('create_admin_user', {
@@ -502,8 +502,8 @@ export default function AdminConsoleView({ initialTab = 'profile' } = {}) {
         e.preventDefault();
         setSelfPasswordError(null);
 
-        if (selfNewPassword.length < 6) {
-            setSelfPasswordError('Password must be at least 6 characters long.');
+        if (selfNewPassword.length < 12) {
+            setSelfPasswordError('Password must be at least 12 characters long.');
             return;
         }
 
@@ -976,9 +976,9 @@ export default function AdminConsoleView({ initialTab = 'profile' } = {}) {
                                 className="form-control"
                                 value={newPassword}
                                 onChange={(e) => setNewPassword(e.target.value)}
-                                placeholder="At least 6 characters"
+                                placeholder="At least 12 characters"
                                 required
-                                minLength={6}
+                                minLength={12}
                             />
                         </div>
                         <div className="form-group">
@@ -990,7 +990,7 @@ export default function AdminConsoleView({ initialTab = 'profile' } = {}) {
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 placeholder="Re-enter new password"
                                 required
-                                minLength={6}
+                                minLength={12}
                             />
                         </div>
                         <button
@@ -3011,9 +3011,9 @@ export default function AdminConsoleView({ initialTab = 'profile' } = {}) {
                                         className="form-control"
                                         value={newAccountTempPassword}
                                         onChange={(e) => setNewAccountTempPassword(e.target.value)}
-                                        placeholder="e.g. TempPass2026!"
+                                        placeholder="e.g. TempPass2026!Secure"
                                         required
-                                        minLength={6}
+                                        minLength={12}
                                     />
                                 </div>
                             </div>
@@ -3112,9 +3112,9 @@ export default function AdminConsoleView({ initialTab = 'profile' } = {}) {
                                         className="form-control"
                                         value={selfNewPassword}
                                         onChange={(e) => setSelfNewPassword(e.target.value)}
-                                        placeholder="At least 6 characters"
+                                        placeholder="At least 12 characters"
                                         required
-                                        minLength={6}
+                                        minLength={12}
                                     />
                                 </div>
                                 <div className="form-group">
@@ -3126,7 +3126,7 @@ export default function AdminConsoleView({ initialTab = 'profile' } = {}) {
                                         onChange={(e) => setSelfConfirmPassword(e.target.value)}
                                         placeholder="Re-enter new password"
                                         required
-                                        minLength={6}
+                                        minLength={12}
                                     />
                                 </div>
                             </div>
