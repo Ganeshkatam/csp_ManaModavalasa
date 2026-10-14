@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert';
-import { generateSlug, getAllSchemes, getSchemeBySlugOrId } from './schemes.js';
+import { generateSlug, getAllSchemes, getSchemeBySlugOrId, findBestSchemeMatch } from './schemes.js';
 
 test('generateSlug converts scheme name to url-friendly slug', () => {
     assert.strictEqual(
@@ -13,6 +13,48 @@ test('generateSlug converts scheme name to url-friendly slug', () => {
     );
     assert.strictEqual(generateSlug(''), '');
     assert.strictEqual(generateSlug(null), '');
+});
+
+test('findBestSchemeMatch resolves full and partial slugs correctly', () => {
+    const mockSchemes = [
+        { id: '1', name: 'Dr. NTR Vaidya Seva Health Scheme' },
+        { id: '2', name: 'Talliki Vandanam Scheme (formerly Jagananna Amma Vodi)' },
+        { id: '3', name: 'PM-Kisan Samman Nidhi (with Annadata Sukhibhava)' },
+        { id: '4', name: 'Post-Matric Fee Reimbursement (Jagananna Vidya Deevena & Vasathi Deevena)' },
+        { id: '5', name: 'NTR Bharosa Pension Scheme ' }
+    ];
+
+    // 1. Exact full slug from user's URL
+    const matchFull = findBestSchemeMatch(
+        mockSchemes,
+        'post-matric-fee-reimbursement-jagananna-vidya-deevena-vasathi-deevena'
+    );
+    assert.ok(matchFull);
+    assert.strictEqual(matchFull.id, '4');
+
+    // 2. Prefix/partial slug
+    const matchPrefix = findBestSchemeMatch(mockSchemes, 'post-matric-fee-reimbursement');
+    assert.ok(matchPrefix);
+    assert.strictEqual(matchPrefix.id, '4');
+
+    // 3. Middle slug component
+    const matchMiddle = findBestSchemeMatch(mockSchemes, 'jagananna-vidya-deevena');
+    assert.ok(matchMiddle);
+    assert.strictEqual(matchMiddle.id, '4');
+
+    // 4. Talliki Vandanam full and partial
+    const matchTalliki = findBestSchemeMatch(mockSchemes, 'talliki-vandanam-scheme-formerly-jagananna-amma-vodi');
+    assert.ok(matchTalliki);
+    assert.strictEqual(matchTalliki.id, '2');
+
+    // 5. Unknown slug
+    const matchUnknown = findBestSchemeMatch(mockSchemes, 'completely-nonexistent-scheme-xyz');
+    assert.strictEqual(matchUnknown, null);
+
+    // 6. Null and empty inputs
+    assert.strictEqual(findBestSchemeMatch(null, 'test'), null);
+    assert.strictEqual(findBestSchemeMatch([], 'test'), null);
+    assert.strictEqual(findBestSchemeMatch(mockSchemes, ''), null);
 });
 
 test('getSchemeBySlugOrId returns null for empty or null identifier', async () => {
@@ -37,4 +79,5 @@ test('getSchemeBySlugOrId handles slug lookup gracefully without throwing', asyn
     const result = await getSchemeBySlugOrId('talliki-vandanam-scheme');
     assert.strictEqual(result, null);
 });
+
 
