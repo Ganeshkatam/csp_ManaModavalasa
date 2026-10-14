@@ -15,8 +15,8 @@ A 4-Week (100-Hour) Field-Driven Community Service Project engineered for Modava
 - **Academic Context**: Community Service Project (CSP) fulfilling mandatory B.Tech Computer Science and Engineering curricular requirements under the Jawaharlal Nehru Technological University (JNTU) framework.
 - **Project Duration**: 4 Weeks / 100 Verified Hours (24 Working Days).
 - **Core Engineering Principle**: **Field Survey -> Empirical Evidence -> Problem Identification -> Portal Implementation -> Community Testing**.
-- **Live Deployment**: [https://villagemitra.vercel.app](https://villagemitra.vercel.app)
-- **Source Repository**: [https://github.com/Ganeshkatam/csp_villagemitra](https://github.com/Ganeshkatam/csp_villagemitra)
+- **Live Deployment**: [https://manamodavalasa.vercel.app](https://manamodavalasa.vercel.app)
+- **Source Repository**: [https://github.com/Ganeshkatam/csp_ManaModavalasa](https://github.com/Ganeshkatam/csp_ManaModavalasa)
 - **Primary Database**: Supabase PostgreSQL 15+ (Project Ref: `mjpuyirbwaznnomzifyv`, AWS AP-South-1).
 - **Non-Impersonation Notice**: This platform is an independent student academic initiative engineered for civic utility and academic research. It is neither an official government website nor an agency of the Government of Andhra Pradesh or the Government of India. All outbound scheme links point directly to official `.gov.in` and `.nic.in` domains.
 
@@ -47,6 +47,8 @@ All baseline civic metrics for the portal are provenance-gated, combining offici
 | **Parliamentary Constituency** | Vizianagaram | Election Commission of India |
 | **Local Administrative Secretariat** | Modavalasa Grama Sachivalayam (Ward 2 Complex) | Government of Andhra Pradesh |
 | **Primary Economic Livelihoods** | Paddy Agriculture, Handloom Weaving (BC Colony), Dairy Cooperatives, Rural Services | CSP Field Survey & Community Interviews |
+
+> **Demographic Baseline Reconciliation**: The authoritative baseline for this study is strictly derived from the official Census of India 2011 Primary Census Abstract (PCA) for Village Code `583218` (Denkada Mandal, Vizianagaram District), recording 2,584 persons across 624 households. Third-party web aggregators citing 3,792 persons and 958 households conflate contiguous revenue hamlets, combine Mandal-level sub-blocks, or quote unverified secondary projections. All academic metrics herein adhere to the official Census PCA baseline.
 
 ---
 
@@ -184,7 +186,7 @@ The database architecture consists of 16 relational tables in Supabase PostgreSQ
 ## 7. Repository Directory Structure
 
 ```text
-e:/csp/
+csp_ManaModavalasa/
 ├── .gitignore                                    # Git exclusion rules
 ├── LICENSE                                       # Apache License 2.0
 ├── package.json                                  # Root proxy scripts (dev, build, lint, test)
@@ -381,18 +383,18 @@ The project satisfies the 100-Hour Community Service Project requirement across 
 
 For deployment, incident management, and academic evaluation, refer to the dedicated documentation artifacts:
 
-- [Certified 100-Hour Daily Logbook](file:///e:/csp/documentation/daily-logbook.md)
-- [Comprehensive Academic Final Report](file:///e:/csp/documentation/final-report.md)
-- [Viva Defense Handbook](file:///e:/csp/documentation/viva-guide.md)
-- [Disaster Recovery and Database Backup Runbook](file:///e:/csp/documentation/DISASTER_RECOVERY_AND_BACKUPS.md)
-- [Zero-Downtime Secret Rotation Guide](file:///e:/csp/documentation/SECRET_ROTATION.md)
-- [Incident Response & Severity Plan](file:///e:/csp/documentation/INCIDENT_RESPONSE.md)
-- [Technical, Functional & Compliance Audit](file:///e:/csp/documentation/project-features-and-compliance-audit.md)
+- [Certified 100-Hour Daily Logbook](documentation/daily-logbook.md)
+- [Comprehensive Academic Final Report](documentation/final-report.md)
+- [Viva Defense Handbook](documentation/viva-guide.md)
+- [Disaster Recovery and Database Backup Runbook](documentation/DISASTER_RECOVERY_AND_BACKUPS.md)
+- [Zero-Downtime Secret Rotation Guide](documentation/SECRET_ROTATION.md)
+- [Incident Response & Severity Plan](documentation/INCIDENT_RESPONSE.md)
+- [Technical, Functional & Compliance Audit](documentation/project-features-and-compliance-audit.md)
 
 ---
 
 ## 12. License & Academic Attribution
 
-This project is licensed under the **Apache License 2.0** - see the [LICENSE](file:///e:/csp/LICENSE) file for complete details.
+This project is licensed under the **Apache License 2.0** - see the [LICENSE](LICENSE) file for complete details.
 
 Developed by Ganesh Katam as a student Community Service Project (CSP) in Computer Science and Engineering. Strictly adheres to zero-emoji constraints and academic integrity standards.

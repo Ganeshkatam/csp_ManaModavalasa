@@ -21,7 +21,7 @@ This document establishes the official backup, recovery, and data preservation r
 Using the Supabase CLI with project connection credentials:
 ```bash
 # 1. Export schema and data into a compressed custom-format dump
-supabase db dump --project-ref mjpuyirbwaznnomzifyv --data-only -f backups/csp_villagemitra_data_$(date +%Y%m%d).sql
+supabase db dump --project-ref mjpuyirbwaznnomzifyv --data-only -f backups/csp_manamodavalasa_data_$(date +%Y%m%d).sql
 
 # Or using native PostgreSQL client tools (pg_dump)
 pg_dump -h db.mjpuyirbwaznnomzifyv.supabase.co \
@@ -29,7 +29,7 @@ pg_dump -h db.mjpuyirbwaznnomzifyv.supabase.co \
         -U postgres \
         -d postgres \
         -Fc \
-        -f backups/csp_villagemitra_backup_$(date +%Y%m%d).dump
+        -f backups/csp_manamodavalasa_backup_$(date +%Y%m%d).dump
 ```
 
 ---
@@ -61,7 +61,7 @@ pg_restore -h localhost \
            -d csp_recovery_test \
            --data-only \
            --disable-triggers \
-           backups/csp_villagemitra_backup_latest.dump
+           backups/csp_manamodavalasa_backup_latest.dump
 ```
 
 ### Step 4: Verify Post-Restoration Invariants

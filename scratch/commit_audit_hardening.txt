@@ -1,0 +1,23 @@
+fix(security): resolve domain mismatch, tighten CSP, and harden survey ingestion
+
+### Context
+Codebase and database audit identified several production alignment and security items: canonical metadata and sitemaps were pointing to legacy domain villagemitra.vercel.app rather than manamodavalasa.vercel.app; CSP allowed unsafe-inline scripts and unused third-party qrserver domains; public survey tables permitted direct anonymous table inserts alongside submit_survey RPC; demographic Census 2011 baseline required reconciliation against secondary aggregator counts; and public dashboard needed clear k-anonymity privacy status indication.
+
+### Changes
+- Updated canonical URLs, hreflang alternates, Open Graph, Twitter cards, and Schema.org JSON-LD in app/index.html to point to manamodavalasa.vercel.app.
+- Replaced legacy domain references in app/public/sitemap.xml, app/public/robots.txt, and app/public/humans.txt.
+- Corrected live deployment URL and source repository link in README.md; replaced local workstation paths (file:///e:/csp/ and e:/csp/) with relative markdown links.
+- Hardened Content Security Policy in app/vercel.json and root vercel.json by removing unsafe-inline from script-src and removing https://api.qrserver.com from img-src.
+- Added database migration 20261014010000_restrict_survey_inserts_and_enforce_rate_limits.sql and updated database/schema.sql to drop direct anon table inserts on survey_responses and survey_answers, restricting direct mutations to authenticated admins.
+- Added server-side duplicate submission replay guard (5-minute window) and village burst rate limiting (max 30 submissions/min) inside submit_survey RPC.
+- Documented official Census 2011 PCA baseline (Village Code 583218: 2,584 persons, 624 households) in villageProfile.js and README.md, clarifying aggregator count discrepancies.
+- Added visual k-anonymity privacy notice banner in DashboardView.jsx when aggregate distributions are withheld for small cohorts (k < 5).
+
+### Verification
+- npm test (all 87 tests passed: 73 app unit tests + 14 root integration and database invariant tests).
+- npm run lint (0 errors, 31 warnings).
+- npm run build (production build generated 32 distribution bundles in 708ms without error).
+
+### Impact / Notes
+- Completely closes anonymous direct table insert attack surface on survey tables while preserving atomic submission via submit_survey RPC.
+- Eliminates canonical duplicate indexing penalties across search engines.

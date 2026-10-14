@@ -368,6 +368,16 @@ export default function DashboardView({ initialTab = 'ALL' } = {}) {
                 </div>
             )}
 
+            {!isAdmin && summary?.privacy_suppressed && (
+                <div className="alert alert-info" role="status" style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '1.25rem', background: 'var(--color-blue-50)', borderColor: 'var(--color-blue-200)', color: 'var(--color-blue-900)' }}>
+                    <ShieldCheck size={18} style={{ color: 'var(--color-blue-600)', flexShrink: 0 }} aria-hidden="true" />
+                    <div>
+                        <strong>k-Anonymity Privacy Guard Active:</strong>{' '}
+                        <span>{summary.privacy_notice || 'Detailed distributions are suppressed for cohorts under 5 respondents to prevent household re-identification.'}</span>
+                    </div>
+                </div>
+            )}
+
             {/* Interactive Filter Toolbar */}
             <div className="analytics-filter-bar">
                 <div className="analytics-filter-controls">

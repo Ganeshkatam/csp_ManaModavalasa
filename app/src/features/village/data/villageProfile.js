@@ -36,7 +36,8 @@ export const CENSUS_2011_BASELINE = {
         source: 'Census of India 2011 (Village Code: 583218) & India Post Directory',
         sourceTe: 'భారత ప్రభుత్వం సెన్సస్ 2011 (గ్రామ కోడ్: 583218) మరియు ఇండియా పోస్ట్ డైరెక్టరీ',
         evidenceClass: 'Census of India 2011 & India Post',
-        evidenceClassTe: 'సెన్సస్ 2011 & ఇండియా పోస్ట్ అధికారికం'
+        evidenceClassTe: 'సెన్సస్ 2011 & ఇండియా పోస్ట్ అధికారికం',
+        reconciliationNote: 'Authoritative baseline reflects Census of India 2011 Primary Census Abstract (PCA) for Village Code 583218 (2,584 persons, 624 households). Third-party aggregator listings citing 3,792 persons and 958 households conflate contiguous revenue hamlets, combine Mandal-level sub-blocks, or quote unverified secondary projections.'
     }
 };
 

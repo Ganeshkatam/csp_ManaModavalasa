@@ -860,6 +860,8 @@ DECLARE
     v_a_val TEXT;
     v_q_rec RECORD;
     v_d5_val INT;
+    v_recent_same_respondent INT;
+    v_recent_village_total INT;
 BEGIN
     -- 1. Idempotency guard: if a response with this client UUID already exists, return existing
     IF p_survey_client_uuid IS NOT NULL THEN
@@ -912,6 +914,27 @@ BEGIN
     END IF;
     IF p_started_at IS NOT NULL AND p_completed_at IS NOT NULL AND p_completed_at < p_started_at THEN
         RAISE EXCEPTION 'completed_at cannot precede started_at';
+    END IF;
+
+    -- Anti-replay guard: prevent duplicate respondent_code submissions within 5 minutes
+    SELECT COUNT(*) INTO v_recent_same_respondent
+    FROM public.survey_responses
+    WHERE lower(respondent_code) = lower(v_clean_code)
+      AND village_id = p_village_id
+      AND created_at > (now() - interval '5 minutes');
+
+    IF v_recent_same_respondent > 0 THEN
+        RAISE EXCEPTION 'A survey response for respondent code % was recently recorded. Please wait 5 minutes before resubmitting.', v_clean_code;
+    END IF;
+
+    -- Burst protection: max 30 survey submissions per minute per village
+    SELECT COUNT(*) INTO v_recent_village_total
+    FROM public.survey_responses
+    WHERE village_id = p_village_id
+      AND created_at > (now() - interval '1 minute');
+
+    IF v_recent_village_total >= 30 THEN
+        RAISE EXCEPTION 'Survey submission rate limit exceeded for this village. Please retry shortly.';
     END IF;
 
     -- 3. Answers payload validation & cardinality enforcement
@@ -1109,11 +1132,6 @@ CREATE POLICY "Admin manage survey questions"
 DROP POLICY IF EXISTS "Admin manage survey responses" ON public.survey_responses;
 DROP POLICY IF EXISTS "Surveyors insert survey responses" ON public.survey_responses;
 
-CREATE POLICY "Surveyors insert survey responses"
-  ON public.survey_responses FOR INSERT
-  TO anon, authenticated
-  WITH CHECK (consent_obtained = true);
-
 CREATE POLICY "Admin manage survey responses"
   ON public.survey_responses FOR ALL
   TO authenticated
@@ -1123,11 +1141,6 @@ CREATE POLICY "Admin manage survey responses"
 -- 19.6 Survey Answers Policies
 DROP POLICY IF EXISTS "Admin manage survey answers" ON public.survey_answers;
 DROP POLICY IF EXISTS "Surveyors insert survey answers" ON public.survey_answers;
-
-CREATE POLICY "Surveyors insert survey answers"
-  ON public.survey_answers FOR INSERT
-  TO anon, authenticated
-  WITH CHECK (true);
 
 CREATE POLICY "Admin manage survey answers"
   ON public.survey_answers FOR ALL

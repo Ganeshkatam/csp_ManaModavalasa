@@ -1,5 +1,5 @@
 # Robots.txt for ManaModavalasa (మన మోదవలస) — Digital Village Information Portal
-# Production Domain: https://villagemitra.vercel.app
+# Production Domain: https://manamodavalasa.vercel.app
 
 User-agent: *
 Allow: /
@@ -27,5 +27,5 @@ Disallow: /admin/*
 Disallow: /api/
 
 # Host and Sitemap Declarations
-Host: https://villagemitra.vercel.app
-Sitemap: https://villagemitra.vercel.app/sitemap.xml
+Host: https://manamodavalasa.vercel.app
+Sitemap: https://manamodavalasa.vercel.app/sitemap.xml

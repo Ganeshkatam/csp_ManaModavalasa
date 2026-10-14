@@ -14,5 +14,5 @@ Grama Sachivalayam staff, community health workers (ANM, ASHA), and citizens of 
 Last update: 2026-10-14
 Standards: HTML5, CSS3, ES2024, GIGW Accessibility Standards
 Software Architecture: React 19, Vite 8, Pure CSS, Supabase PostgreSQL 15+
-Production Domain: https://villagemitra.vercel.app
-Source Repository: https://github.com/Ganeshkatam/csp_villagemitra
+Production Domain: https://manamodavalasa.vercel.app
+Source Repository: https://github.com/Ganeshkatam/csp_ManaModavalasa
