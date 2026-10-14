@@ -15,6 +15,8 @@ Allow: /dashboard
 Allow: /assets/
 Allow: /images/
 Allow: /favicon.svg
+Allow: /favicon.ico
+Allow: /favicon.png
 Allow: /sitemap.xml
 Allow: /manifest.json
 Allow: /.well-known/security.txt
