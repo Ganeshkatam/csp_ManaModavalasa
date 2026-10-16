@@ -115,7 +115,7 @@ BEGIN
 END;
 $block$;
 
--- 4. Private rate-limit storage and atomic sliding-window counter.
+-- 4. Private rate-limit storage and atomic fixed-window counter.
 CREATE TABLE IF NOT EXISTS public.assistant_rate_limits (
     rate_key TEXT PRIMARY KEY,
     request_count INTEGER NOT NULL DEFAULT 1 CHECK (request_count >= 1),
@@ -153,12 +153,6 @@ BEGIN
 
     IF p_window_seconds IS NULL OR p_window_seconds < 1 OR p_window_seconds > 86400 THEN
         RAISE EXCEPTION 'Invalid window seconds boundary';
-    END IF;
-
-    -- Opportunistic cleanup is bounded to old keys and runs on a small sample.
-    IF random() < 0.05 THEN
-        DELETE FROM public.assistant_rate_limits
-         WHERE last_request_at < v_now - INTERVAL '2 hours';
     END IF;
 
     INSERT INTO public.assistant_rate_limits AS current_limit
@@ -214,8 +208,9 @@ BEGIN
     DELETE FROM public.assistant_events
      WHERE created_at < now() - INTERVAL '30 days';
 
+    -- Retain rate limits for at least 48 hours to ensure any active window (up to 24h) has elapsed.
     DELETE FROM public.assistant_rate_limits
-     WHERE last_request_at < now() - INTERVAL '2 hours';
+     WHERE last_request_at < now() - INTERVAL '48 hours';
 END;
 $function$;
 
