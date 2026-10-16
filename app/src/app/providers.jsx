@@ -7,9 +7,16 @@ import { APP_CONFIG } from './config';
 const AppContext = createContext(null);
 
 export function AppProvider({ children }) {
-    const [lang, setLang] = useState(() => 
-        localStorage.getItem(APP_CONFIG.storageKeys.language) || 'en'
-    );
+    const [lang, setLang] = useState(() => {
+        if (typeof window !== 'undefined') {
+            const params = new URLSearchParams(window.location.search);
+            const queryLang = params.get('lang');
+            if (queryLang === 'te' || queryLang === 'en') {
+                return queryLang;
+            }
+        }
+        return localStorage.getItem(APP_CONFIG.storageKeys.language) || 'en';
+    });
     const [textZoom, setTextZoom] = useState(() => 
         localStorage.getItem(APP_CONFIG.storageKeys.zoom) || 'normal'
     );
@@ -18,9 +25,12 @@ export function AppProvider({ children }) {
     const [sessionLoading, setSessionLoading] = useState(true);
     const isOnline = useOnlineStatus();
 
-    // Persist Language
+    // Persist Language and sync HTML lang attribute
     useEffect(() => {
         localStorage.setItem(APP_CONFIG.storageKeys.language, lang);
+        if (typeof document !== 'undefined') {
+            document.documentElement.lang = lang;
+        }
     }, [lang]);
 
     // Persist and apply Text Zoom

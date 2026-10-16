@@ -4,6 +4,7 @@ import { Calendar, ArrowLeft, Bell } from 'lucide-react';
 import { useAppContext } from '../../app/providers';
 import { announcementService } from '../../features/announcements/api/announcements';
 import { getLocalized } from '../../i18n';
+import { useSEO } from '../../hooks/useSEO';
 import { formatHumanDisplay } from '../../utils/dates';
 import { LoadingState } from '../../components/feedback/LoadingState';
 import { ErrorState } from '../../components/feedback/ErrorState';
@@ -15,6 +16,13 @@ export function AnnouncementDetailsPage() {
     const [announcement, setAnnouncement] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const annTitle = announcement ? getLocalized(announcement, 'title', lang) : null;
+    const annDesc = announcement ? getLocalized(announcement, 'content', lang) : null;
+    useSEO({
+        title: annTitle,
+        description: annDesc
+    });
 
     useEffect(() => {
         window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
