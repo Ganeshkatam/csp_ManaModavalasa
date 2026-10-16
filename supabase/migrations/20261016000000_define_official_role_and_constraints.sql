@@ -143,7 +143,7 @@ DECLARE
 BEGIN
     IF p_rate_key IS NULL
        OR length(p_rate_key) > 128
-       OR p_rate_key !~ '^(sess|sub_mint|sub_req):[a-zA-Z0-9_.:-]{1,100}$' THEN
+       OR p_rate_key !~ '^(sess|sub_mint|sub_req):[a-zA-Z0-9_.:/-]{1,100}$' THEN
         RAISE EXCEPTION 'Invalid rate limit key format';
     END IF;
 
