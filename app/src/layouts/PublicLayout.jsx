@@ -6,11 +6,14 @@ import { MobileBottomNav } from '../components/navigation/MobileBottomNav';
 import { AnnouncementTicker } from '../features/announcements/components/AnnouncementTicker';
 import { announcementService } from '../features/announcements/api/announcements';
 import { useAppContext } from '../app/providers';
+import { useSEO } from '../hooks/useSEO';
 
 export function PublicLayout() {
     const { lang } = useAppContext();
     const [announcements, setAnnouncements] = useState([]);
     const location = useLocation();
+
+    useSEO();
 
     useEffect(() => {
         window.scrollTo({ top: 0, left: 0, behavior: 'instant' });

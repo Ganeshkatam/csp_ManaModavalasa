@@ -5,10 +5,13 @@ import { Footer } from '../components/navigation/Footer';
 import { MobileBottomNav } from '../components/navigation/MobileBottomNav';
 import { ShieldCheck, Wifi, WifiOff } from 'lucide-react';
 import { useAppContext } from '../app/providers';
+import { useSEO } from '../hooks/useSEO';
 
 export function SurveyLayout() {
     const { isOnline } = useAppContext();
     const location = useLocation();
+
+    useSEO();
 
     useEffect(() => {
         window.scrollTo({ top: 0, left: 0, behavior: 'instant' });

@@ -8,6 +8,7 @@ import {
 import { useAppContext } from '../../app/providers';
 import { schemeService } from '../../features/schemes';
 import { getLocalized } from '../../i18n';
+import { useSEO } from '../../hooks/useSEO';
 import { LoadingState } from '../../components/feedback/LoadingState';
 import { ErrorState } from '../../components/feedback/ErrorState';
 import { EmptyState } from '../../components/ui/EmptyState';
@@ -20,6 +21,13 @@ export function SchemeDetailsPage() {
     const [scheme, setScheme] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const schemeTitle = scheme ? getLocalized(scheme, 'name', lang) : null;
+    const schemeDesc = scheme ? (getLocalized(scheme, 'summary', lang) || getLocalized(scheme, 'objective', lang)) : null;
+    useSEO({
+        title: schemeTitle,
+        description: schemeDesc
+    });
 
     const resetViewportToTop = () => {
         window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
