@@ -83,7 +83,7 @@ BEGIN
             false,
             'Statewide',
             'Andhra Pradesh State Disaster Response and Fire Services Department',
-            NULL,
+            CURRENT_DATE,
             'draft',
             'WP1 placeholder; pending field verification with Vizianagaram Fire Station',
             'Statewide emergency transit network'
@@ -106,7 +106,7 @@ BEGIN
             false,
             'Statewide',
             'Ministry of Health and Family Welfare, Government of India & AP Health Dept',
-            NULL,
+            CURRENT_DATE,
             'draft',
             'WP1 placeholder; pending field verification with DMHO Mental Health Cell',
             'National tele-consultation network'
