@@ -1,5 +1,5 @@
 # Robots.txt for ManaModavalasa (మన మోదవలస) — Digital Village Information Portal
-# Production Domain: https://manamodavalasa.tomesphere.in
+# Production Domain: https://manamodavalasa.vercel.app
 
 User-agent: *
 Allow: /
@@ -27,4 +27,4 @@ Disallow: /admin/*
 Disallow: /api/
 
 # Host and Sitemap Declarations
-Sitemap: https://manamodavalasa.tomesphere.in/sitemap.xml
+Sitemap: https://manamodavalasa.vercel.app/sitemap.xml
