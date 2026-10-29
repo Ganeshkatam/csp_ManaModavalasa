@@ -78,18 +78,5 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
-  ],
-  "redirects": [
-    {
-      "source": "/(.*)",
-      "has": [
-        {
-          "type": "host",
-          "value": "manamodavalasa.vercel.app"
-        }
-      ],
-      "destination": "https://manamodavalasa.tomesphere.in/$1",
-      "permanent": true
-    }
   ]
 }
