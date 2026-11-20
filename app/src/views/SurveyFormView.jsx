@@ -6,6 +6,56 @@ import { SURVEY_CANONICAL_OPTIONS } from '../lib/surveyConstants';
 import { validateSurveyForm, buildSurveyPayload } from '../utils/surveyValidation';
 import { uploadSurveyPayload, enqueueOfflineSurvey, getOfflineSurveysCount, syncOfflineSurveys as syncSurveysFromStorage } from '../features/survey/api/surveyService';
 
+const INITIAL_SURVEY_FORM_DATA = {
+    // Metadata
+    respondentCode: '',
+    interviewerName: '',
+    localityWard: '',
+    customLocality: '',
+    consentObtained: false,
+
+    // 01. Demographics (6 controls)
+    D1: '',
+    D2: '',
+    D3: '',
+    D4: '',
+    D5: '',
+    D6: '',
+
+    // 02. Digital Connectivity (3 controls)
+    TECH1: '',
+    TECH2: '',
+    TECH3: '',
+
+    // 03. Welfare Schemes (4 controls)
+    SCH1: '',
+    SCH2: '',
+    SCH3: '',
+    SCH4: [], // Multi-select array
+
+    // 04. Emergency Directory (5 controls)
+    CON1_Panchayat: '',
+    CON1_PHC: '',
+    CON1_Police: '',
+    CON1_Lineman: '',
+    CON2: '',
+
+    // 05. Healthcare & Education (3 controls)
+    HLTH1: '',
+    EDU1: '',
+    INFRA1: '',
+
+    // 06. Local Livelihoods & Business Directory (2 controls)
+    BIZ1: '',
+    BIZ2: '',
+
+    // 07. Information Priorities (1 control)
+    PRIO1: '',
+
+    // Qualitative Observations
+    notes: ''
+};
+
 export default function SurveyFormView() {
     const [isOnline, setIsOnline] = useState(navigator.onLine);
     const [offlineCount, setOfflineCount] = useState(0);
@@ -17,56 +67,8 @@ export default function SurveyFormView() {
     const [localityOptions, setLocalityOptions] = useState([]);
     const [, setLoadingLocalities] = useState(true);
 
-    // Complete 21 Logical-Question / 24 Answer-Control State
-    const [formData, setFormData] = useState({
-        // Metadata
-        respondentCode: 'HH-016',
-        interviewerName: '',
-        localityWard: '',
-        customLocality: '',
-        consentObtained: true,
-
-        // 01. Demographics (6 controls)
-        D1: '26-40',
-        D2: 'Female',
-        D3: 'Agriculture',
-        D4: 'Secondary',
-        D5: '4',
-        D6: 'White-BPL-Card',
-
-        // 02. Digital Connectivity (3 controls)
-        TECH1: 'Smartphone-Available',
-        TECH2: 'Mobile-Data-4G-5G',
-        TECH3: 'Independent',
-
-        // 03. Welfare Schemes (4 controls)
-        SCH1: 'Panchayat-Notices',
-        SCH2: 'Unknown-Eligibility-Docs',
-        SCH3: 'Frequently-Confused',
-        SCH4: ['PM-KISAN'], // Multi-select array
-
-        // 04. Emergency Directory (5 controls)
-        CON1_Panchayat: 'No',
-        CON1_PHC: 'No',
-        CON1_Police: 'No',
-        CON1_Lineman: 'No',
-        CON2: 'Ask-Neighbors',
-
-        // 05. Healthcare & Education (3 controls)
-        HLTH1: 'Visited-PHC-No-Doctor',
-        EDU1: 'Easily-Accessible',
-        INFRA1: 'Panchayat-RO-Plant',
-
-        // 06. Local Livelihoods & Business Directory (2 controls)
-        BIZ1: 'Personal-Contacts',
-        BIZ2: 'Very-Helpful',
-
-        // 07. Information Priorities (1 control)
-        PRIO1: 'Emergency-Contacts',
-
-        // Qualitative Observations
-        notes: ''
-    });
+    // Clean 21 Logical-Question / 24 Answer-Control State
+    const [formData, setFormData] = useState(INITIAL_SURVEY_FORM_DATA);
 
     const [startTime] = useState(new Date().toISOString());
 
@@ -104,22 +106,11 @@ export default function SurveyFormView() {
 
             opts.push({ value: 'OTHER', label: 'Other / Specify New Locality' });
             setLocalityOptions(opts);
-
-            if (opts.length > 0) {
-                setFormData(prev => prev.localityWard ? prev : ({ ...prev, localityWard: opts[0].value }));
-            }
         } catch (err) {
-            console.warn('Failed to load verified localities, using fallback catalog:', err);
-            const fallbackOpts = [
-                { value: 'East Weavers Colony', label: 'East Weavers Colony' },
-                { value: 'Central Bazaar', label: 'Central Bazaar' },
-                { value: 'North Ward', label: 'North Ward' },
-                { value: 'Harijanawada', label: 'Harijanawada' },
-                { value: 'Main Road', label: 'Main Road' },
+            console.warn('Failed to load verified localities from database:', err);
+            setLocalityOptions([
                 { value: 'OTHER', label: 'Other / Specify New Locality' }
-            ];
-            setLocalityOptions(fallbackOpts);
-            setFormData(prev => prev.localityWard ? prev : ({ ...prev, localityWard: fallbackOpts[0].value }));
+            ]);
         } finally {
             setLoadingLocalities(false);
         }
@@ -297,18 +288,10 @@ export default function SurveyFormView() {
     };
 
     const resetForm = () => {
-        // Auto-increment respondent code for next survey
-        setFormData(prev => {
-            const currentNum = parseInt((prev.respondentCode.match(/\d+/) || [15])[0], 10);
-            const nextCode = `HH-${String(currentNum + 1).padStart(3, '0')}`;
-            return {
-                ...prev,
-                respondentCode: nextCode,
-                customLocality: '',
-                SCH4: ['PM-KISAN'],
-                notes: ''
-            };
-        });
+        setFormData(prev => ({
+            ...INITIAL_SURVEY_FORM_DATA,
+            interviewerName: prev.interviewerName || ''
+        }));
     };
 
     return (
@@ -640,7 +623,8 @@ export default function SurveyFormView() {
                             </label>
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: '0.85rem' }}>
                                 {SURVEY_CANONICAL_OPTIONS.CON1_SUBCODES.map(sub => {
-                                    const isSaved = formData[sub.code] === 'Yes';
+                                    const isYes = formData[sub.code] === 'Yes';
+                                    const isNo = formData[sub.code] === 'No';
                                     return (
                                         <div key={sub.code} style={{ padding: '0.75rem', background: 'var(--color-slate-50)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-slate-200)' }}>
                                             <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-slate-800)', marginBottom: '0.5rem' }}>
@@ -654,10 +638,10 @@ export default function SurveyFormView() {
                                                         flex: 1,
                                                         padding: '0.35rem',
                                                         borderRadius: 'var(--radius-sm)',
-                                                        border: `1px solid ${isSaved ? 'var(--color-emerald-600)' : 'var(--color-slate-200)'}`,
-                                                        background: isSaved ? 'var(--color-emerald-50)' : '#ffffff',
-                                                        color: isSaved ? 'var(--color-emerald-800)' : 'var(--color-slate-700)',
-                                                        fontWeight: isSaved ? 700 : 500,
+                                                        border: `1px solid ${isYes ? 'var(--color-emerald-600)' : 'var(--color-slate-200)'}`,
+                                                        background: isYes ? 'var(--color-emerald-50)' : '#ffffff',
+                                                        color: isYes ? 'var(--color-emerald-800)' : 'var(--color-slate-700)',
+                                                        fontWeight: isYes ? 700 : 500,
                                                         fontSize: '0.75rem',
                                                         cursor: 'pointer'
                                                     }}
@@ -671,10 +655,10 @@ export default function SurveyFormView() {
                                                         flex: 1,
                                                         padding: '0.35rem',
                                                         borderRadius: 'var(--radius-sm)',
-                                                        border: `1px solid ${!isSaved ? 'var(--color-red-600)' : 'var(--color-slate-200)'}`,
-                                                        background: !isSaved ? 'var(--color-red-50)' : '#ffffff',
-                                                        color: !isSaved ? 'var(--color-red-800)' : 'var(--color-slate-700)',
-                                                        fontWeight: !isSaved ? 700 : 500,
+                                                        border: `1px solid ${isNo ? 'var(--color-red-600)' : 'var(--color-slate-200)'}`,
+                                                        background: isNo ? 'var(--color-red-50)' : '#ffffff',
+                                                        color: isNo ? 'var(--color-red-800)' : 'var(--color-slate-700)',
+                                                        fontWeight: isNo ? 700 : 500,
                                                         fontSize: '0.75rem',
                                                         cursor: 'pointer'
                                                     }}

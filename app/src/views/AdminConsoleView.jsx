@@ -182,7 +182,7 @@ const defaultAnnouncement = {
     description_te: "",
     category: "Public Meeting",
     event_date: "",
-    source: "Grama Panchayat Notice Board",
+    source: "",
     verified_on: new Date().toISOString().slice(0, 10),
     image_url: "",
     status: "published"
@@ -197,10 +197,10 @@ const defaultScheme = {
     description_te: "",
     eligibility: "",
     eligibility_te: "",
-    documents: "Aadhaar, Ration Card, Bank Passbook",
+    documents: "",
     documents_te: "",
-    official_url: "https://",
-    source: "AP State Portal",
+    official_url: "",
+    source: "",
     verified_on: new Date().toISOString().slice(0, 10),
     image_url: "",
     status: "published"
@@ -214,10 +214,10 @@ const defaultContact = {
     designation: "",
     designation_te: "",
     phone: "",
-    jurisdiction: "Andhra Pradesh",
+    jurisdiction: "",
     address: "",
-    availability: "24x7 Toll-Free",
-    source: "District Administration Directory",
+    availability: "",
+    source: "",
     verified_on: new Date().toISOString().slice(0, 10),
     status: "published"
 };
@@ -229,10 +229,10 @@ const defaultInstitution = {
     type: "PHC",
     address: "",
     phone: "",
-    timings: "9:00 AM - 4:00 PM",
+    timings: "",
     services: "",
     services_te: "",
-    source: "Department Circular",
+    source: "",
     verified_on: new Date().toISOString().slice(0, 10),
     image_url: "",
     status: "published"
@@ -248,7 +248,7 @@ const defaultBusiness = {
     services_te: "",
     address: "",
     phone: "",
-    source: "Local Market Survey",
+    source: "",
     verified_on: new Date().toISOString().slice(0, 10),
     image_url: "",
     status: "published"

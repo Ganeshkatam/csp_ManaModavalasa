@@ -1,4 +1,4 @@
-import { supabase } from '../../../lib/supabase';
+import { supabase, isSupabaseConfigured } from '../../../lib/supabase.js';
 
 export const CONTACT_CATEGORIES = [
     'All',
@@ -11,8 +11,10 @@ export const CONTACT_CATEGORIES = [
 ];
 
 export const contactService = {
-    async getContacts({ category = 'All', search = '', limit } = {}) {
-        let query = supabase
+    async getContacts({ category = 'All', search = '', limit } = {}, client = supabase) {
+        if (!isSupabaseConfigured && client === supabase) return [];
+
+        let query = client
             .from('contacts')
             .select('id, village_id, name, name_te, designation, designation_te, category, phone, address, availability, source, verified_on, jurisdiction, status')
             .eq('status', 'published')
@@ -44,25 +46,18 @@ export const contactService = {
         return results;
     },
 
-    async getEmergencyHelplines() {
-        const { data, error } = await supabase
+    async getEmergencyHelplines(client = supabase) {
+        if (!isSupabaseConfigured && client === supabase) return [];
+
+        const { data, error } = await client
             .from('contacts')
             .select('*')
             .eq('status', 'published')
             .in('phone', ['108', '100', '104', '1912'])
             .order('phone');
 
-        if (!error && data && data.length > 0) {
-            return data;
-        }
-
-        // Default verified helplines fallback
-        return [
-            { id: '108', name: '108 Emergency Ambulance', phone: '108', category: 'Emergency', source: 'AP Health Dept', verified_on: '2026-09-01' },
-            { id: '100', name: '100 Police Emergency', phone: '100', category: 'Emergency', source: 'AP Police', verified_on: '2026-09-01' },
-            { id: '104', name: '104 Health Advisory', phone: '104', category: 'Healthcare', source: 'AP Health Dept', verified_on: '2026-09-01' },
-            { id: '1912', name: '1912 Electricity Helpline', phone: '1912', category: 'Utilities', source: 'APEPDCL', verified_on: '2026-09-06' }
-        ];
+        if (error) throw error;
+        return data || [];
     }
 };
 

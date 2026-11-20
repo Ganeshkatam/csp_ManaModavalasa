@@ -14,9 +14,13 @@ export function Header() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        contactService.getEmergencyHelplines().then(data => {
-            if (data && data.length > 0) setHelplines(data);
-        });
+        contactService.getEmergencyHelplines()
+            .then(data => {
+                if (data && data.length > 0) setHelplines(data);
+            })
+            .catch(err => {
+                console.error('Failed to load emergency helplines:', err);
+            });
     }, []);
 
     const handleSignOut = async () => {
@@ -39,22 +43,25 @@ export function Header() {
                     </div>
 
                     <div className="utility-actions">
-                        <div className="utility-helplines">
-                            <span className="helpline-label">24x7 Helplines:</span>
-                            {helplines.slice(0, 3).map(hl => (
-                                <a 
-                                    key={hl.phone}
-                                    href={createTelLink(hl.phone)} 
-                                    className={`helpline-pill ${hl.phone === '108' ? 'helpline-red' : hl.phone === '100' ? 'helpline-blue' : 'helpline-green'}`} 
-                                    title={`${hl.name} (${hl.phone})`}
-                                >
-                                    <Phone size={10} style={{ marginRight: '3px' }} aria-hidden="true" />
-                                    <span>{hl.phone} {hl.phone === '108' ? 'Ambulance' : hl.phone === '100' ? 'Police' : 'Health'}</span>
-                                </a>
-                            ))}
-                        </div>
-
-                        <span className="utility-divider">|</span>
+                        {helplines && helplines.length > 0 && (
+                            <>
+                                <div className="utility-helplines">
+                                    <span className="helpline-label">24x7 Helplines:</span>
+                                    {helplines.slice(0, 3).map(hl => (
+                                        <a 
+                                            key={hl.phone}
+                                            href={createTelLink(hl.phone)} 
+                                            className={`helpline-pill ${hl.phone === '108' ? 'helpline-red' : hl.phone === '100' ? 'helpline-blue' : 'helpline-green'}`} 
+                                            title={`${hl.name} (${hl.phone})`}
+                                        >
+                                            <Phone size={10} style={{ marginRight: '3px' }} aria-hidden="true" />
+                                            <span>{hl.phone} {hl.phone === '108' ? 'Ambulance' : hl.phone === '100' ? 'Police' : 'Health'}</span>
+                                        </a>
+                                    ))}
+                                </div>
+                                <span className="utility-divider">|</span>
+                            </>
+                        )}
 
                         <div className="utility-tools">
                             <button
